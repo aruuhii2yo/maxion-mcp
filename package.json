@@ -1,0 +1,15 @@
+{
+  "name": "maxion-mcp",
+  "version": "1.0.0",
+  "description": "J&K Advanced Technologies MCP Server",
+  "main": "index.js",
+  "bin": {
+    "maxion-mcp": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.1"
+  }
+}
