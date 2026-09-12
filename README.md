@@ -3,7 +3,7 @@
 [![CI & Quality](https://github.com/aruuhii2yo/maxion-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/aruuhii2yo/maxion-mcp/actions)
 [![Smithery Registry](https://img.shields.io/badge/Smithery-Connected-10b981.svg)](https://smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway)
 [![GitHub Release](https://img.shields.io/github/v/release/aruuhii2yo/maxion-mcp?color=blue)](https://github.com/aruuhii2yo/maxion-mcp/releases)
-[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
 [![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-6366f1.svg)](https://modelcontextprotocol.io)
 
 
@@ -67,9 +67,19 @@ Free trial available for every user. Enter a license key to unlock unlimited, pe
 
 ---
 
+## Live Ops Console
+
+A live status dashboard polls this gateway's real telemetry (gate status, engine health, and the tamper-evident audit ledger) every 20 seconds — real numbers, not a screenshot:
+
+**[Open the Ops Console →](https://claude.ai/code/artifact/db6b581b-aa74-438a-a75b-a86251821600)**
+
+The current public endpoint it polls: `https://millions-roses-breath-figure.trycloudflare.com` (this is a rotating address, not a permanent one — if the dashboard shows "SIGNAL LOST," the endpoint has since moved).
+
+---
+
 ## Verification & Testing
 
-Tested against 200+ regression checks and adversarial safety simulations on every release to ensure stability and reliable tool execution.
+Tested against 150 regression checks + 54 adversarial checks on every release to ensure stability and reliable tool execution.
 
 ## Links
 
