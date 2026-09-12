@@ -1,5 +1,11 @@
 # Maxion — Real-Time Security & Stability for MCP AI Agents
 
+[![Smithery Registry](https://img.shields.io/badge/Smithery-Connected-10b981.svg)](https://smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway)
+[![GitHub Release](https://img.shields.io/github/v/release/aruuhii2yo/maxion-mcp?color=blue)](https://github.com/aruuhii2yo/maxion-mcp/releases)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![MCP Compatible](https://img.shields.io/badge/MCP-Compatible-6366f1.svg)](https://modelcontextprotocol.io)
+
+
 Give your AI agents autonomy without putting your files, credentials, or computer at risk.
 
 Maxion provides an in-process protective layer that verifies agent actions before they execute—preventing unauthorized commands, catching prompt injection attempts, and keeping your machine cool during long autonomous runs.
