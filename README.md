@@ -54,7 +54,7 @@ Connect through the Smithery Registry:
 npx -y @smithery/cli install aruuhii2yo/maxion-mcp-gateway
 ```
 
-Or connect your MCP client (Claude Desktop, Cursor, etc.) directly using the hosted endpoint on the [Smithery page](https://smithery.ai/server/aruuhii2yo/maxion-mcp-gateway).
+Or connect your MCP client (Claude Desktop, Cursor, etc.) directly using the hosted endpoint on the [Smithery page](https://smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway).
 
 Free trial available for every user. Enter a license key to unlock unlimited, permanent access.
 
@@ -67,5 +67,5 @@ Tested against 200+ regression checks and adversarial safety simulations on ever
 ## Links
 
 - **Homepage**: [advancedapparchitect.com](https://advancedapparchitect.com)
-- **Smithery Registry**: [smithery.ai/server/aruuhii2yo/maxion-mcp-gateway](https://smithery.ai/server/aruuhii2yo/maxion-mcp-gateway)
+- **Smithery Registry**: [smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway](https://smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway)
 - **Vendor**: J&K Advanced Technologies
