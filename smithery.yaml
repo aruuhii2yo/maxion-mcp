@@ -1,9 +1,0 @@
-startCommand:
-  type: stdio
-  config:
-    command: node
-    args:
-      - index.js
-build:
-  buildCommand: npm run build
-  installCommand: npm install
