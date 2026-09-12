@@ -1,0 +1,41 @@
+name: CI & Quality Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Verify Documentation & Structural Assets
+        run: |
+          test -f README.md
+          test -f LICENSE
+          test -f SECURITY.md
+          echo "Core repository assets verified."
+
+      - name: Verify Safety & Grounding Standards
+        run: |
+          node -e "
+            const fs = require('fs');
+            const readme = fs.readFileSync('README.md', 'utf8');
+            const forbidden = ['100% immunity', 'complete immunity', 'absolute safety', 'ironclad guarantee', 'stopped dead in their tracks'];
+            for (const phrase of forbidden) {
+              if (readme.toLowerCase().includes(phrase)) {
+                console.error('Forbidden ungrounded phrase found:', phrase);
+                process.exit(1);
+              }
+            }
+            console.log('Grounded safety verification passed: 0 prohibited claims.');
+          "
