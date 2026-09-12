@@ -1,5 +1,6 @@
 # Maxion — Real-Time Security & Stability for MCP AI Agents
 
+[![CI & Quality](https://github.com/aruuhii2yo/maxion-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/aruuhii2yo/maxion-mcp/actions)
 [![Smithery Registry](https://img.shields.io/badge/Smithery-Connected-10b981.svg)](https://smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway)
 [![GitHub Release](https://img.shields.io/github/v/release/aruuhii2yo/maxion-mcp?color=blue)](https://github.com/aruuhii2yo/maxion-mcp/releases)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
