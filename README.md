@@ -40,7 +40,7 @@ Run resource-intensive AI agent workflows locally while keeping your machine res
 | Layer | The Outcome It Delivers |
 |---|---|
 | **Security Gate** | Intercepts tool calls in real time to filter prompt injections and block unauthorized actions before execution. |
-| **Diamonize** | Monitors execution behavior and enforces process boundaries to stop runaway loops and rogue commands. |
+| **Diamonize** | Scans files and running processes for known threat signatures, quarantines anything flagged, and keeps a tamper-evident audit log of every finding. |
 | **Maxion V16** | Autonomous hardware governor that dynamically regulates compute load to prevent overheating and system freezes. |
 | **Quezar** | Encrypted local vault that isolates sensitive credentials, tokens, and agent state. |
 
