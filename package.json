@@ -1,16 +1,28 @@
 {
-  "name": "maxion-mcp",
+  "name": "@aruuhii2yo/maxion-mcp",
   "version": "1.0.0",
-  "description": "Stdio bridge to the hosted Maxion MCP security gateway",
+  "description": "Stdio bridge to the hosted Maxion MCP security gateway — in-process security gate, prompt injection defense, and autonomous thermal governor for AI agents.",
   "main": "index.js",
   "bin": {
     "maxion-mcp": "./index.js"
   },
-  "license": "SEE LICENSE IN LICENSE",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/aruuhii2yo/maxion-mcp.git"
+    "url": "git+https://github.com/aruuhii2yo/maxion-mcp.git"
   },
   "homepage": "https://advancedapparchitect.com",
-  "keywords": ["mcp", "model-context-protocol", "security", "ai-agents"]
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "agent-security",
+    "prompt-injection",
+    "governor",
+    "claude-desktop",
+    "ai-agents"
+  ],
+  "author": "aruuhii2yo",
+  "license": "SEE LICENSE IN LICENSE"
 }
