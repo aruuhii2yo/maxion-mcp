@@ -1,0 +1,27 @@
+{
+  "name": "@aruuhii2yo/maxion-mcp",
+  "version": "1.0.0",
+  "description": "In-process security gate, prompt injection defense, and autonomous thermal governor for MCP AI agents.",
+  "main": "index.js",
+  "bin": {
+    "maxion-mcp": "./index.js"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aruuhii2yo/maxion-mcp.git"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "agent-security",
+    "prompt-injection",
+    "governor",
+    "claude-desktop",
+    "ai-agents"
+  ],
+  "author": "aruuhii2yo",
+  "license": "Apache-2.0"
+}
