@@ -11,7 +11,7 @@ Give your AI agents autonomy without putting your files, credentials, or compute
 
 Maxion provides an in-process protective layer that verifies agent actions before they execute—preventing unauthorized commands, catching prompt injection attempts, and keeping your machine cool during long autonomous runs.
 
-This repository provides public documentation and quickstart instructions for connecting to the Maxion gateway.
+This repository contains a small stdio bridge (`index.js`) that connects an MCP client to the hosted Maxion gateway, plus quickstart documentation. The engines themselves (Maxion V16, Quezar, Diamonize) and the security gate run server-side and are not part of this repo.
 
 ---
 
@@ -55,10 +55,23 @@ Run resource-intensive AI agent workflows locally while keeping your machine res
 
 ## Quick Install
 
-Connect through the Smithery Registry:
+**Via Smithery Registry:**
 
 ```bash
 npx -y @smithery/cli install aruuhii2yo/maxion-mcp-gateway
+```
+
+**Run this bridge directly** (add to your MCP client's config, e.g. `claude_desktop_config.json`):
+
+```json
+{
+  "mcpServers": {
+    "maxion": {
+      "command": "npx",
+      "args": ["-y", "github:aruuhii2yo/maxion-mcp"]
+    }
+  }
+}
 ```
 
 Or connect your MCP client (Claude Desktop, Cursor, etc.) directly using the hosted endpoint on the [Smithery page](https://smithery.ai/servers/aruuhii2yo/maxion-mcp-gateway).
@@ -73,7 +86,7 @@ A live status dashboard polls this gateway's real telemetry (gate status, engine
 
 **[Open the Ops Console →](https://claude.ai/code/artifact/db6b581b-aa74-438a-a75b-a86251821600)**
 
-The current public endpoint it polls: `https://millions-roses-breath-figure.trycloudflare.com` (this is a rotating address, not a permanent one — if the dashboard shows "SIGNAL LOST," the endpoint has since moved).
+The current public endpoint it polls: `https://oops-fred-compromise-royal.trycloudflare.com` (this is a rotating address, not a permanent one — if the dashboard shows "SIGNAL LOST," the endpoint has since moved).
 
 ---
 

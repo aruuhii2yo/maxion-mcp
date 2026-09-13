@@ -1,0 +1,16 @@
+{
+  "name": "maxion-mcp",
+  "version": "1.0.0",
+  "description": "Stdio bridge to the hosted Maxion MCP security gateway",
+  "main": "index.js",
+  "bin": {
+    "maxion-mcp": "./index.js"
+  },
+  "license": "SEE LICENSE IN LICENSE",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aruuhii2yo/maxion-mcp.git"
+  },
+  "homepage": "https://advancedapparchitect.com",
+  "keywords": ["mcp", "model-context-protocol", "security", "ai-agents"]
+}
