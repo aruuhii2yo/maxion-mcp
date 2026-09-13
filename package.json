@@ -1,10 +1,10 @@
 {
   "name": "@aruuhii2yo/maxion-mcp",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Stdio bridge to the hosted Maxion MCP security gateway — in-process security gate, prompt injection defense, and autonomous thermal governor for AI agents.",
   "main": "index.js",
   "bin": {
-    "maxion-mcp": "./index.js"
+    "maxion-mcp": "index.js"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
