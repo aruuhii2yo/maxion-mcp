@@ -42,9 +42,9 @@ Unlike cloud-based security wrappers that introduce massive network latency and 
 * **Cloud Guardrail APIs** (AWS Bedrock Guardrails, Azure AI Content Safety, Llama Guard): Incur **150ms – 350ms (150,000µs – 350,000µs)** network roundtrip latency per tool call, creating noticeable pauses in agent responses.
 * **Maxion In-Process Gate**: Runs directly in the memory boundary with an average latency of **<50 microseconds (~3.8µs per check)**. That is **over 5,000x faster than cloud guardrail APIs**, adding zero perceptible latency to agent streaming.
 
-### 2. 508 MB/s Verified Streaming Throughput
-* Engineered with a zero-copy, non-blocking pipeline capable of sustaining **508 MB/s verified throughput** across concurrent tool streams.
-* Handles high-volume file inspections, multi-agent tool dispatches, and large context payload sweeps without CPU thrashing or memory bottlenecks.
+### 2. Zero-Copy Non-Blocking Stream Concurrency
+* **Wire-Speed In-Process Pipeline**: Engineered with an asynchronous, zero-copy architecture that streams tool payloads at native memory speed with zero serialization bottlenecks.
+* **Multi-Agent Swarm Concurrency**: Handles high-volume parallel file sweeps, automated multi-agent delegations (e.g., Claude, Cursor, and Cline running concurrently), and heavy JSON context sweeps without CPU thread starvation or queue lockup.
 
 ### 3. Thermodynamic Compute Pacing & Power Savings
 * **Eliminates Thermal Throttling**: Unconstrained autonomous agent loops push CPUs into continuous 100% thermal saturation, triggering silicon frequency downclocking. Maxion dynamically paces burst compute to keep processors operating inside their peak energy-efficiency curve.
@@ -87,7 +87,7 @@ Autonomous agents generate massive streams of repetitive JSON telemetry, tool ar
 | :--- | :--- | :--- | :--- |
 | **Execution Latency** | 0 ms (No protection) | 150 ms – 350 ms (Cloud roundtrip) | **< 0.05 ms (<50 µs wire-speed)** |
 | **Hardware Thermals** | Runaway heat & fan roaring | High cloud CPU billing | **Autonomous thermal pacing (cool & quiet)** |
-| **Throughput** | Unthrottled | Rate-limited by API tiers | **508 MB/s verified throughput** |
+| **Concurrency & Pipeline** | Thread starvation on heavy loops | Rate-limited by cloud API quotas & jitter | **Non-blocking zero-copy streaming (Zero queue lockup)** |
 | **Token & Secret Protection**| Plaintext in config/memory | Plaintext transit to cloud | **Hardware-sealed AES-256-GCM Vault** |
 | **Telemetry Footprint** | Bloated JSON logs (MBs/GBs) | Stored uncompressed in cloud | **~99% Compaction (up to 342x ratio)** |
 | **Tamper Detection** | None | Log alteration undetected | **128-bit AEAD GCM Authentication** |
