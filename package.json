@@ -1,7 +1,7 @@
 {
   "name": "@aruuhii2yo/maxion-mcp",
   "version": "1.0.1",
-  "description": "Stdio bridge to the hosted Maxion MCP security gateway — in-process security gate, prompt injection defense, and autonomous thermal governor for AI agents.",
+  "description": "Zero-trust MCP security gateway — autonomous compute pacing (Governor), real-time threat interception (Diamonize), and AES-256-GCM encrypted state vault (Quezar). Protects AI agents from prompt injection, runaway loops, and plaintext leakage.",
   "main": "index.js",
   "bin": {
     "maxion-mcp": "index.js"
@@ -13,15 +13,20 @@
     "type": "git",
     "url": "git+https://github.com/aruuhii2yo/maxion-mcp.git"
   },
-  "homepage": "https://advancedapparchitect.com",
+  "homepage": "https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io",
   "keywords": [
     "mcp",
     "model-context-protocol",
     "agent-security",
     "prompt-injection",
+    "zero-trust",
     "governor",
+    "encrypted-storage",
+    "aes-256-gcm",
     "claude-desktop",
-    "ai-agents"
+    "ai-agents",
+    "security-scanner",
+    "yara"
   ],
   "author": "aruuhii2yo",
   "license": "SEE LICENSE IN LICENSE"
