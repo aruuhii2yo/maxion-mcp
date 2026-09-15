@@ -1,0 +1,21 @@
+# Smithery MCP Server Configuration
+# https://smithery.ai/docs/config
+
+startCommand:
+  type: stdio
+  configSchema:
+    type: object
+    properties:
+      gatewayUrl:
+        type: string
+        description: "Maxion Gateway URL (leave blank to use the default live endpoint)"
+        default: "https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io"
+    required: []
+  commandFunction: |-
+    (config) => ({
+      command: "node",
+      args: ["index.js"],
+      env: {
+        MAXION_GATEWAY_URL: config.gatewayUrl || "https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io"
+      }
+    })
