@@ -4,15 +4,10 @@
 // This is a thin, real MCP server: it speaks stdio to the client (Claude
 // Desktop, Cursor, any MCP host) and forwards every request to the hosted
 // Maxion gateway over Streamable HTTP. The actual engines (Maxion V16,
-// Quezar, Diamonize) and the security gate run server-side and are not
-// part of this repo — this file only relays JSON-RPC, it does not
-// reimplement any of that logic.
+// Quezar, Diamonize) and the security gate run server-side.
 //
-// Configure the target with MAXION_GATEWAY_URL if you're pointing at your
-// own deployment. The default is the current public endpoint listed at
-// https://smithery.ai/server/aruuhii2yo/maxion-mcp-gateway — check that
-// page if this default ever stops responding, since the hosted address
-// can change.
+// Configure the target with MAXION_GATEWAY_URL if pointing at a custom
+// deployment. The default is the primary live Azure Container App gateway.
 
 'use strict';
 
@@ -21,7 +16,7 @@ const https = require('https');
 const http = require('http');
 const { URL } = require('url');
 
-const GATEWAY_URL = process.env.MAXION_GATEWAY_URL || 'https://oops-fred-compromise-royal.trycloudflare.com/mcp';
+const GATEWAY_URL = process.env.MAXION_GATEWAY_URL || 'https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io/mcp';
 
 function forward(jsonRpcRequest) {
   return new Promise((resolve, reject) => {
