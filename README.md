@@ -9,6 +9,7 @@
 </p>
 
 [![CI & Quality](https://github.com/aruuhii2yo/maxion-mcp/actions/workflows/ci.yml/badge.svg)](https://github.com/aruuhii2yo/maxion-mcp/actions)
+[![GitHub Marketplace](https://img.shields.io/badge/Marketplace-Maxion%20Action-blueviolet?logo=github)](https://github.com/marketplace/actions/maxion-ai-security-energy-governor)
 [![Smithery](https://img.shields.io/badge/Smithery-Listed-10b981.svg)](https://smithery.ai/server/aruuhii2yo/maxion-mcp)
 [![GitHub Release](https://img.shields.io/github/v/release/aruuhii2yo/maxion-mcp?color=blue)](https://github.com/aruuhii2yo/maxion-mcp/releases)
 [![License: Proprietary](https://img.shields.io/badge/License-Proprietary-lightgrey.svg)](LICENSE)
@@ -16,7 +17,7 @@
 
 > **Every unconstrained AI agent loop is a power bill waiting to happen.** Maxion fixes that — and protects your machine while it does.
 
-Maxion is a zero-trust MCP gateway that gives your AI agents autonomous compute pacing, real-time threat interception, and AES-256-GCM encrypted state vaulting — all running in-process in under 50 microseconds.
+Maxion is a zero-trust MCP gateway and GitHub Action that gives your AI agents autonomous compute pacing, real-time threat interception, and AES-256-GCM encrypted state vaulting — all running in-process in under 50 microseconds.
 
 ---
 
@@ -118,13 +119,25 @@ Run resource-intensive AI agent workloads locally while keeping your machine res
 
 ## Quick Install
 
-**Via Smithery (recommended):**
+### 1. In GitHub Actions (GitHub Marketplace)
+
+Add Maxion to any `.github/workflows/*.yml` pipeline to scan for prompt injections and pace compute:
+
+```yaml
+- name: Maxion AI Security & Energy Governor
+  uses: aruuhii2yo/maxion-mcp@main
+  with:
+    fail-on-threat: 'true'
+    energy-pacing: 'true'
+```
+
+### 2. Via Smithery (Desktop MCP Clients)
 
 ```bash
 npx @smithery/cli install @aruuhii2yo/maxion-mcp
 ```
 
-**Direct MCP config** (Claude Desktop, Cursor, Windsurf, etc.):
+### 3. Direct MCP Config (Claude Desktop, Cursor, Windsurf, etc.)
 
 ```json
 {
@@ -145,5 +158,6 @@ Free trial available. Enter a license key to unlock unlimited permanent access.
 
 - **Live Dashboard**: [maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io](https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io)
 - **Smithery Listing**: [smithery.ai/server/aruuhii2yo/maxion-mcp](https://smithery.ai/server/aruuhii2yo/maxion-mcp)
+- **GitHub Marketplace**: [github.com/marketplace/actions/maxion-ai-security-energy-governor](https://github.com/marketplace/actions/maxion-ai-security-energy-governor)
 - **Homepage**: [advancedapparchitect.com](https://advancedapparchitect.com)
 - **Vendor**: J&K Advanced Technologies
