@@ -1,0 +1,33 @@
+name: 'Maxion AI Security & Energy Governor'
+description: 'Zero-trust prompt injection defense, rogue command interception, and thermodynamic compute pacing for AI workflows.'
+author: 'aruuhii2yo'
+branding:
+  icon: 'shield'
+  color: 'green'
+inputs:
+  gateway-url:
+    description: 'Maxion Gateway Endpoint URL'
+    required: false
+    default: 'https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io'
+  scan-path:
+    description: 'Path or file to scan for adversarial prompt injections and secrets'
+    required: false
+    default: '.'
+  fail-on-threat:
+    description: 'Fail the GitHub Action step if an active threat or injection is detected'
+    required: false
+    default: 'true'
+  energy-pacing:
+    description: 'Enable autonomous thermal & energy pacing for CI runner optimization'
+    required: false
+    default: 'true'
+outputs:
+  status:
+    description: 'Security & Pacing audit status (passed or quarantined)'
+  threats-intercepted:
+    description: 'Total number of threat vectors neutralized'
+  energy-saved-wh:
+    description: 'Estimated compute energy saved across CI run (Wh)'
+runs:
+  using: 'node20'
+  main: 'action_runner.js'
