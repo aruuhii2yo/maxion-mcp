@@ -1,6 +1,6 @@
-# Maxion V16 - Speed up your agents while using less tokens, and compute 70,000x faster with nano second processin. Using 70-86% less energy, saving resources/money, while preventing wasteful heat generation, amd thermal hardware degredation, maximizing your hardware life! 
-# Quezar Storage - Store more, for less. Quicker. Your local Quezar vault has extreme compression abilities with nano second injection/retrieval speeds. The fastest architecture on the market, built for any operating system. Increasing your storage space exponentially, cloud free!
-# Diamonize LSA - Secure your data easier, faster, and more secure than ever! This powerhouse of an engine has the strongest, quickest, most unbreakable security engine on the market! Never worry about the outside world invading your data again! 
+# Maxion V16 - Speed up your agents while using less tokens, and compute 70,000x faster with nanosecond processing. Using 70-86% less energy, saving resources/money, while preventing wasteful heat generation, and thermal hardware degradation, maximizing your hardware life! 
+# Quezar Storage - Store more, for less. Quicker. Your local Quezar vault has extreme compression abilities with nanosecond injection/retrieval speeds. The fastest architecture on the market, built for any operating system. Increasing your storage space exponentially, cloud free!
+# Diamonize LSA - Secure your data easier, faster, and more secure than ever! This powerhouse of an engine has the strongest, quickest, enterprise-grade fail-closed defense engine on the market! Never worry about the outside world invading your data again! 
 <p align="center">
   <img src="docs/assets/logo.jpg" alt="Maxion MCP Gateway" width="120" style="border-radius: 20px; box-shadow: 0 0 30px rgba(56,189,248,0.4);" />
 </p>
@@ -126,7 +126,7 @@ Add Maxion to any `.github/workflows/*.yml` pipeline to scan for prompt injectio
 
 ```yaml
 - name: Maxion AI Security & Energy Governor
-  uses: aruuhii2yo/maxion-mcp@main
+  uses: aruuhii2yo/maxion-mcp@v1.0.2
   with:
     fail-on-threat: 'true'
     energy-pacing: 'true'
