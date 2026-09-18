@@ -1,4 +1,4 @@
-# Maxion V16- Efficiency engine with thermal spike prevention during high throughput.
+# Maxion V16- Efficiency engine with thermal spike prevention during high throughput. Higher throughput, lower temps.
 # Quezar Storage- Amazing space saving technology all offline with nano second processing speeds.
 # Diamonize LSA- Unbreakable digital security with nano second detection speeds.
 <p align="center">
