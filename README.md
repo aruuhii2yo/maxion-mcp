@@ -1,4 +1,4 @@
-# Maxion V16- Efficiency/Thermal spike prevention during high throughput.
+Maxion V16- Efficiency/Thermal spike prevention during high throughput.
 Quezar Storage- Elite storage vault with amazing space saving technology all offline with nano second processing speeds.
 Diamonize LSA- Ubreakable security with nano second detection speeds.
 <p align="center">
