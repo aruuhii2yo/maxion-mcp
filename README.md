@@ -1,6 +1,6 @@
-Maxion V16- Efficiency/Thermal spike prevention during high throughput.
-Quezar Storage- Elite storage vault with amazing space saving technology all offline with nano second processing speeds.
-Diamonize LSA- Ubreakable security with nano second detection speeds.
+#Maxion V16- Efficiency/Thermal spike prevention during high throughput.
+#Quezar Storage- Elite storage vault with amazing space saving technology all offline with nano second processing speeds.
+#Diamonize LSA- Ubreakable security with nano second detection speeds.
 <p align="center">
   <img src="docs/assets/logo.jpg" alt="Maxion MCP Gateway" width="120" style="border-radius: 20px; box-shadow: 0 0 30px rgba(56,189,248,0.4);" />
 </p>
