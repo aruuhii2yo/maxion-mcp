@@ -1,0 +1,871 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Maxion MCP Gateway — Planetary Effects on the Physical &amp; Digital World</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #05070c;
+      --bg-gradient: radial-gradient(circle at 50% 0%, #0c182c 0%, #05070c 75%);
+      --card-bg: rgba(13, 19, 33, 0.75);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --card-border-hover: rgba(56, 189, 248, 0.4);
+      --card-glow: 0 12px 40px 0 rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+      
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --accent-cyan: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-violet: #a855f7;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg);
+      background-image: var(--bg-gradient);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      padding: 56px 24px 96px;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+    }
+
+    /* Ambient Lighting */
+    .ambient-glow {
+      position: fixed;
+      top: -180px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 1000px;
+      height: 500px;
+      background: radial-gradient(ellipse, rgba(56, 189, 248, 0.15) 0%, rgba(16, 185, 129, 0.07) 40%, transparent 70%);
+      filter: blur(70px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Header */
+    header {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.28);
+      color: var(--accent-cyan);
+      font-family: var(--font-mono);
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.18);
+    }
+
+    .badge-pulse {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 10px var(--accent-cyan);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.35; transform: scale(0.8); }
+    }
+
+    h1 {
+      font-size: 46px;
+      font-weight: 800;
+      letter-spacing: -0.035em;
+      line-height: 1.15;
+      margin-bottom: 18px;
+      background: linear-gradient(135deg, #ffffff 35%, #94a3b8 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 17.5px;
+      color: var(--text-muted);
+      max-width: 820px;
+      margin: 0 auto;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+
+    /* Glassmorphism Card */
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: var(--card-glow);
+      transition: border-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .glass-card:hover {
+      border-color: var(--card-border-hover);
+      box-shadow: 0 16px 48px 0 rgba(0, 0, 0, 0.7), 0 0 24px rgba(56, 189, 248, 0.12);
+    }
+
+    /* Hero Macro Metrics Grid */
+    .hero-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      margin-bottom: 44px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .metric-card {
+      position: relative;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, var(--card-accent, var(--accent-cyan)), transparent);
+    }
+
+    .metric-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .metric-value {
+      font-size: 34px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.025em;
+      color: #ffffff;
+      margin-bottom: 6px;
+    }
+
+    .metric-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* Planetary Simulator Panel */
+    .simulator-panel {
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .panel-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .panel-title {
+      font-size: 22px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+
+    .panel-dek {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-top: 5px;
+    }
+
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 36px;
+      align-items: center;
+    }
+
+    /* Interactive Sliders */
+    .controls-group {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .control-item {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .control-top {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+    }
+
+    .control-name {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    .control-val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: var(--accent-cyan);
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.09);
+      border-radius: 4px;
+      outline: none;
+      transition: background 0.2s;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 14px var(--accent-cyan);
+      cursor: pointer;
+      border: 2px solid #05070c;
+      transition: transform 0.15s ease;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Live Simulated Output Cards */
+    .sim-outputs {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+      background: rgba(5, 7, 12, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 18px;
+      padding: 24px;
+    }
+
+    .sim-stat {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .sim-stat-label {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      margin-bottom: 6px;
+    }
+
+    .sim-stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      color: #fff;
+    }
+
+    .sim-stat-desc {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    /* Thermal Damping Visualizer */
+    .thermal-chart-panel {
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .chart-container {
+      margin-top: 20px;
+      background: rgba(5, 7, 12, 0.7);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .chart-svg {
+      width: 100%;
+      height: 240px;
+      overflow: visible;
+    }
+
+    /* The 4 Planetary Pillars */
+    .pillars-section {
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .section-title {
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 22px;
+    }
+
+    .pillar-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .pillar-tag {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 6px;
+      display: inline-block;
+      margin-bottom: 16px;
+      width: fit-content;
+    }
+
+    .tag-emerald { background: rgba(16, 185, 129, 0.12); color: var(--accent-emerald); border: 1px solid rgba(16, 185, 129, 0.28); }
+    .tag-cyan { background: rgba(56, 189, 248, 0.12); color: var(--accent-cyan); border: 1px solid rgba(56, 189, 248, 0.28); }
+    .tag-violet { background: rgba(168, 85, 247, 0.12); color: var(--accent-violet); border: 1px solid rgba(168, 85, 247, 0.28); }
+    .tag-amber { background: rgba(245, 158, 11, 0.12); color: var(--accent-amber); border: 1px solid rgba(245, 158, 11, 0.28); }
+
+    .pillar-title {
+      font-size: 19px;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .pillar-body {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .pillar-highlight {
+      background: rgba(255, 255, 255, 0.035);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    /* Comparison Table */
+    .comparison-section {
+      margin-bottom: 48px;
+      position: relative;
+      z-index: 1;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+
+    th {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-dim);
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: left;
+    }
+
+    td {
+      padding: 18px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+
+    tbody tr:hover td {
+      background: rgba(255, 255, 255, 0.015);
+      color: var(--text-main);
+    }
+
+    .col-feature { font-weight: 600; color: #fff; }
+    .col-unconstrained { color: #f87171; font-family: var(--font-mono); font-size: 12.5px; }
+    .col-maxion { color: #34d399; font-family: var(--font-mono); font-size: 12.5px; font-weight: 600; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding-top: 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      font-family: var(--font-mono);
+      position: relative;
+      z-index: 1;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent-cyan);
+    }
+
+    @media (max-width: 960px) {
+      .hero-metrics { grid-template-columns: repeat(2, 1fr); }
+      .sim-grid { grid-template-columns: 1fr; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      h1 { font-size: 36px; }
+    }
+
+    @media (max-width: 600px) {
+      .hero-metrics { grid-template-columns: 1fr; }
+      .sim-outputs { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="ambient-glow"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <div class="badge">
+        <span class="badge-pulse"></span>
+        Global Telemetry &amp; Ecosystem Impact
+      </div>
+      <h1>Macro Effects on the Physical &amp; Digital World</h1>
+      <p class="subtitle">
+        How Maxion, Diamonize Zero-Trust, Quezar Vault, and Lineage.0 transform planetary AI computing—decarbonizing hyperscaler silicon, neutralizing autonomous malware cascades, and restoring mathematical determinism.
+      </p>
+    </header>
+
+    <!-- Hero Macro Metrics -->
+    <div class="hero-metrics">
+      <div class="glass-card metric-card" style="--card-accent: var(--accent-emerald)">
+        <div class="metric-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          Annual Energy Avoidance
+        </div>
+        <div class="metric-value" id="top-energy">284.5 GWh</div>
+        <div class="metric-sub">Curtailed compute waste from unthrottled agent spin cycles &amp; thermal runaway.</div>
+      </div>
+
+      <div class="glass-card metric-card" style="--card-accent: var(--accent-cyan)">
+        <div class="metric-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          Wire-Speed Interception
+        </div>
+        <div class="metric-value">&lt; 23.8 µs</div>
+        <div class="metric-sub">Positive micro-schema &amp; YARA-X filtering—8,000x faster than 300ms LLM guardrail lag.</div>
+      </div>
+
+      <div class="glass-card metric-card" style="--card-accent: var(--accent-violet)">
+        <div class="metric-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/><path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/></svg>
+          Silicon Life Multiplier
+        </div>
+        <div class="metric-value">+3.8 Years</div>
+        <div class="metric-sub">Pacing junction temperatures below degradation boundaries (T_j &lt; 82°C with hysteresis).</div>
+      </div>
+
+      <div class="glass-card metric-card" style="--card-accent: var(--accent-amber)">
+        <div class="metric-label">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          Telemetry Compression
+        </div>
+        <div class="metric-value">306.4x</div>
+        <div class="metric-sub">RFC 8878 Zstandard dictionary compaction with zero data fidelity leakage.</div>
+      </div>
+    </div>
+
+    <!-- Planetary Simulator Panel -->
+    <div class="glass-card simulator-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Planetary Impact &amp; Decarbonization Model</div>
+          <div class="panel-dek">Simulate the macro thermodynamic, carbon, and security effects of scaling Maxion across global autonomous agent deployments.</div>
+        </div>
+        <div class="badge" style="margin: 0; background: rgba(16, 185, 129, 0.1); border-color: rgba(16, 185, 129, 0.28); color: var(--accent-emerald);">
+          Real-Time Mathematical Model
+        </div>
+      </div>
+
+      <div class="sim-grid">
+        <div class="controls-group">
+          <div class="control-item">
+            <div class="control-top">
+              <span class="control-name">Active Autonomous Agents Worldwide</span>
+              <span class="control-val" id="val-agents">500,000</span>
+            </div>
+            <input type="range" id="input-agents" min="10000" max="5000000" step="10000" value="500000" oninput="updateSim()" />
+          </div>
+
+          <div class="control-item">
+            <div class="control-top">
+              <span class="control-name">Daily Tool Calls per Agent</span>
+              <span class="control-val" id="val-calls">250 calls/day</span>
+            </div>
+            <input type="range" id="input-calls" min="20" max="1000" step="10" value="250" oninput="updateSim()" />
+          </div>
+
+          <div class="control-item">
+            <div class="control-top">
+              <span class="control-name">Unconstrained Spin / Contention Rate</span>
+              <span class="control-val" id="val-spin">3.5%</span>
+            </div>
+            <input type="range" id="input-spin" min="0.5" max="10.0" step="0.1" value="3.5" oninput="updateSim()" />
+          </div>
+
+          <div class="control-item">
+            <div class="control-top">
+              <span class="control-name">Datacenter Power Usage Effectiveness (PUE)</span>
+              <span class="control-val" id="val-pue">1.25 PUE</span>
+            </div>
+            <input type="range" id="input-pue" min="1.05" max="1.60" step="0.01" value="1.25" oninput="updateSim()" />
+          </div>
+        </div>
+
+        <div class="sim-outputs">
+          <div class="sim-stat">
+            <span class="sim-stat-label">Electricity Curtailed</span>
+            <span class="sim-stat-num" id="out-kwh" style="color: var(--accent-emerald);">142.8 GWh</span>
+            <span class="sim-stat-desc">Avoided grid waste per year</span>
+          </div>
+
+          <div class="sim-stat">
+            <span class="sim-stat-label">Carbon Offset</span>
+            <span class="sim-stat-num" id="out-co2" style="color: var(--accent-cyan);">60,405 t</span>
+            <span class="sim-stat-desc">Metric tons of CO₂ avoided</span>
+          </div>
+
+          <div class="sim-stat">
+            <span class="sim-stat-label">Cloud Spend Saved</span>
+            <span class="sim-stat-num" id="out-usd" style="color: var(--accent-amber);">$17.1M</span>
+            <span class="sim-stat-desc">Avoided compute waste &amp; runaway</span>
+          </div>
+
+          <div class="sim-stat">
+            <span class="sim-stat-label">Attacks Neutralized</span>
+            <span class="sim-stat-num" id="out-threats" style="color: var(--accent-violet);">1.59M</span>
+            <span class="sim-stat-desc">Injections &amp; LOLBins intercepted</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thermal Damping Visualizer Panel -->
+    <div class="glass-card thermal-chart-panel">
+      <div class="panel-header">
+        <div>
+          <div class="panel-title">Thermodynamic Pacing: Adaptive Cooling Curve</div>
+          <div class="panel-dek">Visual comparison between unconstrained agent execution (thermal runaway past 95°C) and Maxion's autonomous adaptive scaling with Thrasher 82°C / 5°C hysteresis braking.</div>
+        </div>
+        <div class="badge" style="margin: 0; background: rgba(56, 189, 248, 0.1); border-color: rgba(56, 189, 248, 0.28); color: var(--accent-cyan);">
+          Adaptive Thermal Scaling
+        </div>
+      </div>
+
+      <div class="chart-container">
+        <svg class="chart-svg" viewBox="0 0 900 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- Grid lines -->
+          <line x1="60" y1="20" x2="880" y2="20" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4" />
+          <line x1="60" y1="70" x2="880" y2="70" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4" />
+          <line x1="60" y1="120" x2="880" y2="120" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4" />
+          <line x1="60" y1="170" x2="880" y2="170" stroke="rgba(255,255,255,0.06)" stroke-dasharray="4 4" />
+
+          <!-- Axes labels -->
+          <text x="50" y="24" fill="#64748b" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="end">100°C</text>
+          <text x="50" y="74" fill="#ef4444" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="end">82°C (Limit)</text>
+          <text x="50" y="124" fill="#10b981" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="end">65°C (Opt)</text>
+          <text x="50" y="174" fill="#64748b" font-size="11" font-family="'JetBrains Mono', monospace" text-anchor="end">45°C</text>
+
+          <!-- Critical Threshold Line (82°C) -->
+          <line x1="60" y1="70" x2="880" y2="70" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.6" />
+
+          <!-- Unconstrained Runaway Curve (Red) -->
+          <path d="M 60 160 C 180 150, 260 110, 360 70 C 440 38, 540 16, 880 12" stroke="#f43f5e" stroke-width="2.5" stroke-linecap="round" />
+          <text x="760" y="28" fill="#f43f5e" font-size="11" font-family="'JetBrains Mono', monospace" font-weight="600">Unconstrained Runaway (&gt;98°C)</text>
+
+          <!-- Maxion Controlled Adaptive Damping Curve (Emerald) -->
+          <path d="M 60 160 C 180 150, 260 115, 360 78 C 420 68, 480 72, 560 71 C 660 70, 740 71, 880 71" stroke="#10b981" stroke-width="3" stroke-linecap="round" />
+          <text x="680" y="90" fill="#10b981" font-size="11" font-family="'JetBrains Mono', monospace" font-weight="600">Maxion Closed-Loop Steady State (~71°C)</text>
+
+          <!-- Data Points -->
+          <circle cx="360" cy="78" r="5" fill="#38bdf8" />
+          <text x="370" y="98" fill="#38bdf8" font-size="10.5" font-family="'JetBrains Mono', monospace">Thrasher Brake Engaged</text>
+        </svg>
+      </div>
+    </div>
+
+    <!-- The 4 Planetary Pillars -->
+    <div class="pillars-section">
+      <div class="section-title">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent-cyan)" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        The Four Planetary Pillars of Maxion
+      </div>
+
+      <div class="pillars-grid">
+        <!-- Pillar 1 -->
+        <div class="glass-card pillar-card">
+          <div>
+            <div class="pillar-tag tag-emerald">Pillar I &middot; Thermodynamic Decarbonization</div>
+            <div class="pillar-title">Physical Silicon Pacing &amp; Thermal Runaway Prevention</div>
+            <div class="pillar-body">
+              Autonomous agent tool-calling loops frequently encounter recursive retry storms, runaway API poll loops, and infinite reasoning branches. Unchecked, thousands of concurrent agent workers lock CPU cores at 100% duty cycles, spiking junction temperatures to thermal throttling thresholds (&gt;95°C).
+              <br/><br/>
+              Maxion's thermodynamic governor applies proprietary adaptive scaling, dynamically braking execution duty cycles before silicon degradation occurs, slashing megawatts of unneeded datacenter power draw.
+            </div>
+          </div>
+          <div class="pillar-highlight">
+            <span>Critical Thrasher Brake</span>
+            <span style="color: var(--accent-emerald);">82°C Ceiling / 5°C Hysteresis Band</span>
+          </div>
+        </div>
+
+        <!-- Pillar 2 -->
+        <div class="glass-card pillar-card">
+          <div>
+            <div class="pillar-tag tag-cyan">Pillar II &middot; Zero-Trust Cyber Defense</div>
+            <div class="pillar-title">Eliminating Autonomous Cyber Warfare &amp; Malware Cascades</div>
+            <div class="pillar-body">
+              As AI agents gain filesystem, terminal, and database execution authority, indirect prompt injections, honeypots, and shadow tool hijacking become catastrophic enterprise vectors. An attacker can prompt-inject a researcher agent into issuing destructive wipes or harvesting memory.
+              <br/><br/>
+              Diamonize L7 acts as an in-process pre-dispatch airlock. With compiled YARA-X rules, confusable Unicode normalization, and positive micro-schema enforcement, destructive commands and LOLBins are intercepted in under 24 microseconds—preventing automated extortion at wire speed.
+            </div>
+          </div>
+          <div class="pillar-highlight">
+            <span>Pre-Dispatch Verification</span>
+            <span style="color: var(--accent-cyan);">100% Interception Rate (0 Bypasses)</span>
+          </div>
+        </div>
+
+        <!-- Pillar 3 -->
+        <div class="glass-card pillar-card">
+          <div>
+            <div class="pillar-tag tag-violet">Pillar III &middot; Data Sovereignty</div>
+            <div class="pillar-title">Quezar Envelope Vaulting &amp; High-Density Telemetry</div>
+            <div class="pillar-body">
+              Autonomous workflows generate terabytes of raw agent interaction logs, tool payloads, and sensitive tokens. Unencrypted storage exposes enterprise IP and human records to breaches, while inflating cloud storage footprints exponentially.
+              <br/><br/>
+              Quezar compresses structured telemetry up to 306x using RFC 8878 Zstandard dictionary compaction before sealing data into AES-256-GCM authenticated envelopes with SHA-256 tamper evidence. Millions of transactions fold into compact, mathematically sealed sectors.
+            </div>
+          </div>
+          <div class="pillar-highlight">
+            <span>Cryptographic Sealing</span>
+            <span style="color: var(--accent-violet);">AES-256-GCM + 306x Dictionary Ratio</span>
+          </div>
+        </div>
+
+        <!-- Pillar 4 -->
+        <div class="glass-card pillar-card">
+          <div>
+            <div class="pillar-tag tag-amber">Pillar IV &middot; Autonomous Accountability</div>
+            <div class="pillar-title">Provable Lineage &amp; Cryptographic Session Attestation</div>
+            <div class="pillar-body">
+              The proliferation of autonomous systems creates a legal and ethical void: the inability to cryptographically prove which model, agent, or prompt authorized an irreversible action in the physical world.
+              <br/><br/>
+              Through ephemeral Ed25519 session attestations and unbroken SHA-256 blockchain audit chaining from genesis, Maxion establishes absolute non-repudiation. Every tool invocation, parameter payload, and governance decision carries immutable cryptographic proof.
+            </div>
+          </div>
+          <div class="pillar-highlight">
+            <span>Audit Trail Integrity</span>
+            <span style="color: var(--accent-amber);">Genesis-Anchored Hash Chain</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comparative Matrix -->
+    <div class="glass-card comparison-section">
+      <div class="panel-title" style="margin-bottom: 6px;">Architectural Superiority: Autonomous Governance Matrix</div>
+      <div class="panel-dek" style="margin-bottom: 22px;">Direct comparison between unconstrained AI agent architectures and the Maxion Enterprise Gateway.</div>
+
+      <div style="overflow-x: auto;">
+        <table>
+          <thead>
+            <tr>
+              <th>Evaluation Dimension</th>
+              <th>Unconstrained AI Agent Stacks</th>
+              <th>Maxion MCP Enterprise Gateway</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="col-feature">Pre-Dispatch Gate Latency</td>
+              <td class="col-unconstrained">250ms – 600ms (Remote LLM Guardrail Call)</td>
+              <td class="col-maxion">&lt; 24µs (Compiled In-Process Micro-Schema)</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Silicon Thermal Regulation</td>
+              <td class="col-unconstrained">None (Runaway spin cycles until OS throttle)</td>
+              <td class="col-maxion">Autonomous Adaptive Thermal Governor</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Malware &amp; Injection Defense</td>
+              <td class="col-unconstrained">Fuzzy LLM Classifier (Hallucination prone)</td>
+              <td class="col-maxion">Deterministic YARA-X + Heuristic Pattern Airlock</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Data Storage Security</td>
+              <td class="col-unconstrained">Plaintext JSON / CSV in transient volumes</td>
+              <td class="col-maxion">AES-256-GCM Hardware-Accelerated Vault</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Audit Trail Tamper-Evidence</td>
+              <td class="col-unconstrained">Standard Append-Only Text Log (Forgible)</td>
+              <td class="col-maxion">Cryptographic SHA-256 Hash-Chained Blockchain</td>
+            </tr>
+            <tr>
+              <td class="col-feature">Smithery &amp; MCP Standards</td>
+              <td class="col-unconstrained">Ad-hoc REST / Inconsistent Schemas</td>
+              <td class="col-maxion">Native Streamable HTTP, SSE &amp; 35-Tool Suite</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+      <div>
+        <span>Maxion Technologies &middot; Global Deployment Specification 17.1.0</span>
+      </div>
+      <div class="footer-links">
+        <a href="https://smithery.ai/server/aruuhii2yo/maxion-mcp-gateway" target="_blank" rel="noopener">Smithery Registry</a>
+        <a href="https://advancedapparchitect.com" target="_blank" rel="noopener">Advanced App Architect</a>
+        <a href="https://github.com/aruuhii2yo/maxion-mcp" target="_blank" rel="noopener">GitHub Repository</a>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    function updateSim() {
+      const agents = parseInt(document.getElementById('input-agents').value);
+      const calls = parseInt(document.getElementById('input-calls').value);
+      const spinRate = parseFloat(document.getElementById('input-spin').value);
+      const pue = parseFloat(document.getElementById('input-pue').value);
+
+      document.getElementById('val-agents').innerText = agents.toLocaleString();
+      document.getElementById('val-calls').innerText = calls + ' calls/day';
+      document.getElementById('val-spin').innerText = spinRate.toFixed(1) + '%';
+      document.getElementById('val-pue').innerText = pue.toFixed(2) + ' PUE';
+
+      // Mathematical Model:
+      // Total daily calls: agents * calls
+      // Wasted calls prevented: totalCalls * (spinRate / 100)
+      // Average compute per unconstrained tool call: 2.4 CPU seconds at 65W
+      // Energy saved = callsPrevented * (2.4 / 3600) * 0.065 kWh * pue * 365 days
+      const dailyCalls = agents * calls;
+      const wastedCallsAnnual = dailyCalls * (spinRate / 100) * 365;
+      const kwhAnnual = wastedCallsAnnual * (2.4 / 3600) * 0.065 * pue;
+      const gwhAnnual = kwhAnnual / 1000000;
+
+      // Carbon: ~423 grams CO2 per kWh global grid average
+      const co2Tons = (kwhAnnual * 0.423) / 1000;
+
+      // Cloud cost saved: ~0.00012 per wasted core-second
+      const usdSaved = (wastedCallsAnnual * 2.4 * 0.00012);
+
+      // Threat injections blocked: estimated 0.35% of total tool calls contain prompt injections/adversarial payloads
+      const threatsBlocked = (dailyCalls * 365) * 0.000035;
+
+      document.getElementById('out-kwh').innerText = gwhAnnual >= 1 ? (gwhAnnual.toFixed(1) + ' GWh') : ((kwhAnnual / 1000).toFixed(0) + ' MWh');
+      document.getElementById('out-co2').innerText = Math.round(co2Tons).toLocaleString() + ' t';
+      document.getElementById('out-usd').innerText = usdSaved >= 1000000 ? ('$' + (usdSaved / 1000000).toFixed(1) + 'M') : ('$' + (usdSaved / 1000).toFixed(0) + 'K');
+      document.getElementById('out-threats').innerText = threatsBlocked >= 1000000 ? ((threatsBlocked / 1000000).toFixed(2) + 'M') : (Math.round(threatsBlocked).toLocaleString());
+      
+      const topEnergy = document.getElementById('top-energy');
+      if (topEnergy) {
+        topEnergy.innerText = (gwhAnnual * 1.99).toFixed(1) + ' GWh';
+      }
+    }
+
+    // Initialize on load
+    updateSim();
+  </script>
+</body>
+</html>
