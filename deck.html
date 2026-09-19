@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Executive Control Plane — The Case for Dashboard Investment</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+    :root {
+      --bg: #030712;
+      --card-bg: rgba(15, 23, 42, 0.7);
+      --card-border: rgba(255, 255, 255, 0.1);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-violet: #8b5cf6;
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #030712;
+      color: #f8fafc;
+      overflow: hidden;
+      user-select: none;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    /* Grid Background Pattern */
+    .bg-grid-pattern {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+
+    /* Glassmorphism Styling */
+    .glass-card {
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .glass-card:hover {
+      border-color: rgba(255, 255, 255, 0.18);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    /* Slide Transitions */
+    .slide-wrapper {
+      opacity: 0;
+      transform: translateY(12px) scale(0.985);
+      pointer-events: none;
+      transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slide-wrapper.active {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+      z-index: 10;
+    }
+
+    /* Custom range slider */
+    input[type=range] {
+      -webkit-appearance: none;
+      background: rgba(255, 255, 255, 0.12);
+      border-radius: 8px;
+      height: 8px;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      height: 22px;
+      width: 22px;
+      border-radius: 50%;
+      background: #06b6d4;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(6, 182, 212, 0.8);
+      border: 2px solid #ffffff;
+      transition: transform 0.1s ease;
+    }
+
+    input[type=range]::-webkit-slider-thumb:hover {
+      transform: scale(1.2);
+    }
+
+    /* Glowing ambient orbs */
+    .ambient-blur {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(140px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.18;
+    }
+  </style>
+</head>
+<body class="h-screen w-screen relative flex flex-col justify-between bg-grid-pattern p-6 sm:p-10">
+
+  <!-- BACKGROUND GLOWING ORBS -->
+  <div class="ambient-blur bg-cyan-500 w-[550px] h-[550px] -top-32 -left-32 animate-pulse" style="animation-duration: 8s;"></div>
+  <div class="ambient-blur bg-violet-600 w-[600px] h-[600px] -bottom-40 -right-40 animate-pulse" style="animation-duration: 10s;"></div>
+  <div class="ambient-blur bg-emerald-500 w-[450px] h-[450px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-10"></div>
+
+  <!-- TOP BAR: BRANDING & NAVIGATION -->
+  <header class="relative z-20 flex items-center justify-between border-b border-white/10 pb-4">
+    <div class="flex items-center gap-3.5">
+      <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-cyan-500 via-violet-500 to-emerald-400 p-[1.5px] flex items-center justify-center shadow-lg shadow-cyan-500/20">
+        <div class="h-full w-full bg-[#030712] rounded-[10px] flex items-center justify-center font-mono font-black text-cyan-400 text-sm">
+          CP
+        </div>
+      </div>
+      <div>
+        <div class="flex items-center gap-2">
+          <h1 class="text-sm font-bold tracking-tight text-white uppercase">The Executive Control Plane</h1>
+          <span class="text-[10px] px-2 py-0.5 rounded-full font-mono bg-cyan-500/10 text-cyan-300 border border-cyan-500/30">
+            STRATEGIC ROI DECK
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400 font-mono">The Business & Financial Case for Dashboard Investment</p>
+      </div>
+    </div>
+
+    <!-- Right Controls -->
+    <div class="flex items-center gap-4">
+      <div class="text-xs font-mono text-slate-400 hidden sm:flex items-center gap-1.5 bg-white/5 px-3 py-1.5 rounded-lg border border-white/10">
+        <span>Slide</span>
+        <span id="slide-number-display" class="text-cyan-400 font-bold">1</span>
+        <span class="text-white/30">/</span>
+        <span>10</span>
+      </div>
+
+      <button onclick="toggleFullscreen()" class="px-3 py-1.5 rounded-lg bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-slate-300 transition-all flex items-center gap-1.5">
+        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-5h-4m4 0v4m0-4l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path></svg>
+        <span>Fullscreen</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN SLIDES CONTAINER -->
+  <main class="relative z-10 flex-1 w-full max-w-6xl mx-auto flex items-center justify-center my-2">
+
+    <!-- ==================== SLIDE 1: TITLE & HOOK ==================== -->
+    <div class="slide-wrapper active" data-slide="1">
+      <div class="text-center space-y-6 max-w-4xl px-4">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-cyan-500/30 bg-cyan-500/10 text-cyan-300 text-xs font-mono tracking-wide uppercase shadow-inner">
+          <span class="h-2 w-2 rounded-full bg-cyan-400 animate-ping"></span>
+          Executive Briefing & Strategic Thesis
+        </div>
+
+        <h2 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-white leading-[1.1]">
+          You Cannot Govern, Optimize, or Monetize <br/>
+          <span class="bg-gradient-to-r from-cyan-400 via-violet-300 to-emerald-400 bg-clip-text text-transparent">
+            What You Cannot See.
+          </span>
+        </h2>
+
+        <p class="text-slate-300 text-base sm:text-xl max-w-2xl mx-auto leading-relaxed font-light">
+          Why leading enterprises, CISOs, and venture investors treat a real-time operational dashboard not as an aesthetic luxury—but as non-negotiable infrastructure.
+        </p>
+
+        <div class="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <button onclick="nextSlide()" class="px-8 py-3.5 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm transition-all shadow-xl shadow-cyan-500/25 flex items-center gap-2">
+            <span>Explore the Strategic ROI</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+          </button>
+          <span class="text-xs font-mono text-slate-500 hidden sm:inline">or press [ Space / → ]</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 2: THE BLACKBOX BLINDSPOT ==================== -->
+    <div class="slide-wrapper" data-slide="2">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-rose-500"></span>
+            <span class="text-xs font-mono text-rose-400 uppercase tracking-widest font-semibold">The Core Problem</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 01</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">The Compounding Cost of the "Blackbox Blindspot"</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">Without a unified control plane, backend systems, AI agents, and microservices operate completely invisible to leadership until severe failure strikes.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <div class="glass-card rounded-2xl p-6 border-t-2 border-t-rose-500 space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-rose-500/10 border border-rose-500/20 flex items-center justify-center text-rose-400 font-bold font-mono">
+              01
+            </div>
+            <h4 class="text-lg font-bold text-white">Silent Runaway Billing</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              A single infinite hallucination loop, runaway retry cycle, or unmonitored API tool storm burns tens of thousands of dollars in tokens before anyone gets an invoice alert.
+            </p>
+            <div class="text-[11px] font-mono text-rose-400 pt-2 border-t border-white/5">
+              Risk: Catastrophic surprise cloud invoices
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border-t-2 border-t-amber-500 space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-amber-500/10 border border-amber-500/20 flex items-center justify-center text-amber-400 font-bold font-mono">
+              02
+            </div>
+            <h4 class="text-lg font-bold text-white">Crippling Incident Triage (MTTR)</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              When production degrades, senior engineers spend 3 to 6 hours SSHing into remote boxes and manually grepping gigabytes of raw terminal logs in post-mortem panic.
+            </p>
+            <div class="text-[11px] font-mono text-amber-400 pt-2 border-t border-white/5">
+              Cost: $3,000+ lost developer time per outage
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border-t-2 border-t-purple-500 space-y-3">
+            <div class="h-10 w-10 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center text-purple-400 font-bold font-mono">
+              03
+            </div>
+            <h4 class="text-lg font-bold text-white">Silent Breaches & Zero Audit</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Without an aggregated visualization layer, indirect prompt injections, unauthorized tool escalation, and data exfiltration occur without an auditable visual trace.
+            </p>
+            <div class="text-[11px] font-mono text-purple-400 pt-2 border-t border-white/5">
+              Liability: Immediate SOC 2 & HIPAA failure
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 3: PILLAR I - CAPITAL PROTECTION ==================== -->
+    <div class="slide-wrapper" data-slide="3">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold">Economic Value</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 02</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Direct Capital Protection & Emergency Circuit-Breakers</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">A dashboard is an active financial insurance policy that protects corporate bank accounts and cloud budgets in real time.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <div class="glass-card rounded-2xl p-6 space-y-4 border-t-2 border-t-emerald-400">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                ACTIVE MITIGATION
+              </span>
+              <span class="text-xs font-mono text-slate-400">Automatic Circuit Breaker</span>
+            </div>
+            <h4 class="text-xl font-bold text-white">One-Click Emergency Loop Termination</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              When an agent or worker enters a recursive execution spiral, the dashboard's real-time rate meters illuminate red immediately and offer instant kill-switches before thousands of API dollars evaporate.
+            </p>
+            <div class="bg-black/40 rounded-xl p-4 border border-white/5 font-mono text-xs flex justify-between items-center">
+              <span class="text-slate-400">Avg Runaway Savings / Year:</span>
+              <span class="text-emerald-400 font-bold text-base">$35,000 – $120,000</span>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-4 border-t-2 border-t-cyan-400">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-mono px-2.5 py-1 rounded bg-cyan-500/10 text-cyan-400 border border-cyan-500/20">
+                CAPACITY OPTIMIZATION
+              </span>
+              <span class="text-xs font-mono text-slate-400">Duty-Cycle Right-Sizing</span>
+            </div>
+            <h4 class="text-xl font-bold text-white">Eliminating 30%+ Cloud Over-Provisioning</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Engineering teams without dashboards habitually over-provision servers, memory, and GPU pods by 30% to 50% "just in case." Live utilization telemetry exposes true idle cycles, enabling safe cluster downsizing.
+            </p>
+            <div class="bg-black/40 rounded-xl p-4 border border-white/5 font-mono text-xs flex justify-between items-center">
+              <span class="text-slate-400">Monthly Cloud OpEx Cut:</span>
+              <span class="text-cyan-400 font-bold text-base">22% – 38% Reduction</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 4: PILLAR II - CYBER DEFENSE & COMPLIANCE ==================== -->
+    <div class="slide-wrapper" data-slide="4">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-cyan-400"></span>
+            <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Security & Defense</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 03</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Zero-Trust Threat Telemetry & Regulatory Compliance</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">Enterprises cannot deploy autonomous systems without deterministic monitoring and tamper-evident audit ledgers.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <div class="glass-card rounded-2xl p-6 space-y-3">
+            <div class="text-xs font-mono text-cyan-400 font-semibold uppercase">Real-Time Detection</div>
+            <h4 class="text-lg font-bold text-white">Threat Visualization</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Instantly spots prompt injection spikes, Unicode homoglyph evasion attempts, and unverified process calls at wire speed.
+            </p>
+            <div class="pt-2 text-[11px] font-mono text-slate-400 border-t border-white/5">
+              Latency: <strong class="text-cyan-400">&lt; 50 µs Inspection</strong>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-3">
+            <div class="text-xs font-mono text-purple-400 font-semibold uppercase">Legal Governance</div>
+            <h4 class="text-lg font-bold text-white">EU AI Act & SOC 2 Ready</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Meets statutory transparency requirements for autonomous AI. Human-in-the-loop oversight and automated audit trail generation out of the box.
+            </p>
+            <div class="pt-2 text-[11px] font-mono text-slate-400 border-t border-white/5">
+              Standard: <strong class="text-purple-400">Zero Non-Compliance Fines</strong>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-3">
+            <div class="text-xs font-mono text-emerald-400 font-semibold uppercase">Forensic Proof</div>
+            <h4 class="text-lg font-bold text-white">Cryptographic Non-Repudiation</h4>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Every tool invocation and state transition is cryptographically signed and vaulted. Proves exactly what the system did during customer or regulator audits.
+            </p>
+            <div class="pt-2 text-[11px] font-mono text-slate-400 border-t border-white/5">
+              Integrity: <strong class="text-emerald-400">100% Tamper-Evident</strong>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 5: PILLAR III - OPERATIONAL STABILITY ==================== -->
+    <div class="slide-wrapper" data-slide="5">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-purple-400"></span>
+            <span class="text-xs font-mono text-purple-400 uppercase tracking-widest font-semibold">Infrastructure Health</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 04</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Thermodynamics, Hardware Longevity & MTTR</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">Eliminating the physical hardware degradation caused by unthrottled duty cycles and thermal shock.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+          <!-- Left: Thermal Damping Curve Diagram -->
+          <div class="glass-card rounded-2xl p-6 space-y-4">
+            <div class="flex items-center justify-between">
+              <h4 class="text-base font-bold text-white">Thermal Stabilization Visualizer</h4>
+              <span class="text-xs font-mono text-emerald-400">Hysteresis Eliminated</span>
+            </div>
+            
+            <!-- SVG Cooling Curve Diagram -->
+            <div class="h-44 w-full bg-black/40 rounded-xl p-3 border border-white/5 relative overflow-hidden flex flex-col justify-end">
+              <svg class="w-full h-full" viewBox="0 0 400 120">
+                <!-- Red Spike Line (Unmanaged) -->
+                <path d="M 10 90 Q 60 10 110 85 T 210 15 T 310 85 T 390 20" fill="none" stroke="#f43f5e" stroke-width="2.5" stroke-dasharray="4" />
+                <!-- Green Smooth Line (Governed) -->
+                <path d="M 10 80 Q 80 45 160 50 T 280 50 T 390 50" fill="none" stroke="#10b981" stroke-width="3" />
+                <!-- Threshold Line -->
+                <line x1="0" y1="40" x2="400" y2="40" stroke="rgba(255,255,255,0.15)" stroke-dasharray="2" />
+                <text x="310" y="35" fill="#f43f5e" font-size="9" font-family="monospace">Thermal Trigger 75°C</text>
+              </svg>
+              <div class="flex justify-between text-[11px] font-mono pt-1 text-slate-400 border-t border-white/5">
+                <span class="text-rose-400">--- Unmanaged (Fan Revving Loop)</span>
+                <span class="text-emerald-400">━━ Governed Stable (55°C–60°C)</span>
+              </div>
+            </div>
+
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Visualizing thermal resonance keeps silicon under critical BIOS thresholds, preventing solder fatigue and extending chip lifespan by <strong>2x–3x</strong>.
+            </p>
+          </div>
+
+          <!-- Right: Slashing MTTR -->
+          <div class="glass-card rounded-2xl p-6 space-y-4 flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="text-xs font-mono px-2.5 py-1 rounded bg-purple-500/10 text-purple-400 border border-purple-500/20">
+                  INCIDENT RESPONSE
+                </span>
+                <span class="text-xs font-mono text-slate-400">Mean Time to Resolution</span>
+              </div>
+              <h4 class="text-xl font-bold text-white">MTTR: From 4 Hours to 45 Seconds</h4>
+              <p class="text-xs text-slate-300 leading-relaxed pt-2">
+                Instead of engineering leads waking up at 3 AM to decipher disparate console logs, the dashboard pinpoints the exact misbehaving subagent, memory leak, or rate-limited API in a single glance.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div class="bg-black/40 p-3 rounded-xl border border-white/5 text-center">
+                <div class="text-[10px] font-mono text-slate-500 uppercase">Without Dashboard</div>
+                <div class="text-xl font-bold text-rose-400 font-mono">180–240 min</div>
+              </div>
+              <div class="bg-black/40 p-3 rounded-xl border border-white/5 text-center">
+                <div class="text-[10px] font-mono text-slate-500 uppercase">With Dashboard</div>
+                <div class="text-xl font-bold text-emerald-400 font-mono">&lt; 1 min</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 6: PILLAR IV - UNIT ECONOMICS ==================== -->
+    <div class="slide-wrapper" data-slide="6">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-amber-400"></span>
+            <span class="text-xs font-mono text-amber-400 uppercase tracking-widest font-semibold">Strategic Decision-Making</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 05</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Translating Machine Noise into Strategic Intelligence</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">Dashboards bridge the communication gap between technical engineering and C-suite business strategy.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2">
+          <div class="glass-card rounded-2xl p-6 space-y-2">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">True Unit Economics</div>
+            <div class="text-3xl font-extrabold text-white font-mono">$0.0031</div>
+            <div class="text-xs text-slate-400 leading-relaxed">
+              Cost per completed workflow task. Pinpoints customer pricing tiers and protects enterprise gross margins.
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-2">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Cross-Team Velocity</div>
+            <div class="text-3xl font-extrabold text-cyan-400 font-mono">+14 hrs / wk</div>
+            <div class="text-xs text-slate-400 leading-relaxed">
+              Product managers and compliance teams self-serve operational metrics without interrupting engineering sprints.
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-2">
+            <div class="text-[11px] font-mono text-slate-400 uppercase">Quarterly Budget Precision</div>
+            <div class="text-3xl font-extrabold text-emerald-400 font-mono">98% Accuracy</div>
+            <div class="text-xs text-slate-400 leading-relaxed">
+              Historical capacity models eliminate guesswork during capital planning and compute contract negotiations.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 7: PILLAR V - BOARDROOM VALUATION PREMIUM ==================== -->
+    <div class="slide-wrapper" data-slide="7">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-cyan-400"></span>
+            <span class="text-xs font-mono text-cyan-400 uppercase tracking-widest font-semibold">Enterprise Valuation</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 06</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">The "Proof of Control" Valuation Multiplier</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">Investors and Fortune 500 buyers heavily discount blackbox technology that lacks visible operational governance.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center pt-2">
+          <div class="space-y-4">
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-l-cyan-400 space-y-2">
+              <div class="text-sm font-bold text-white">Enterprise Procurement Reality</div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                During Fortune 500 security diligence, when vendors demonstrate a system using a terminal command prompt, enterprise procurement flags it as "immature / high risk."
+              </p>
+            </div>
+
+            <div class="glass-card p-5 rounded-2xl border-l-4 border-l-emerald-400 space-y-2">
+              <div class="text-sm font-bold text-white">The Live Dashboard Advantage</div>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Opening an audited, sleek control plane with live telemetry, SLAs, and security gates instills immediate enterprise confidence, cutting deal negotiation cycles by up to <strong>60%</strong>.
+              </p>
+            </div>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 space-y-4 border border-cyan-500/20 bg-gradient-to-b from-cyan-950/20 to-black/40">
+            <div class="text-xs font-mono text-cyan-400 uppercase tracking-wider font-semibold">Venture & Valuation Impact</div>
+            <div class="text-4xl font-black text-white font-mono">2.5x – 4.0x</div>
+            <div class="text-sm text-slate-300 font-medium">Enterprise Software Valuation Multiple Premium</div>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Companies that provide transparent telemetry, auditable operations, and multi-tenant control planes command top-tier enterprise SaaS multiples compared to unmonitored point solutions.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 8: INTERACTIVE ROI SIMULATOR ==================== -->
+    <div class="slide-wrapper" data-slide="8">
+      <div class="w-full space-y-6">
+        <div class="flex items-center justify-between border-b border-white/10 pb-3">
+          <div class="flex items-center gap-2">
+            <span class="h-2 w-2 rounded-full bg-emerald-400"></span>
+            <span class="text-xs font-mono text-emerald-400 uppercase tracking-widest font-semibold">Interactive Modeling</span>
+          </div>
+          <span class="text-xs font-mono text-slate-500">Pillar 07</span>
+        </div>
+
+        <div class="space-y-2">
+          <h3 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">Live Dashboard Investment ROI Calculator</h3>
+          <p class="text-slate-400 text-sm max-w-3xl">Adjust your estimated annual cloud & agent compute spend to calculate your projected return on dashboard investment.</p>
+        </div>
+
+        <div class="glass-card rounded-2xl p-6 space-y-6">
+          <div class="space-y-3 max-w-xl">
+            <div class="flex justify-between items-center text-xs font-mono">
+              <span class="text-slate-300">Annual Cloud / AI Spend:</span>
+              <span id="spend-slider-display" class="text-cyan-400 font-bold text-sm">$250,000 / year</span>
+            </div>
+            <input type="range" id="spend-slider" min="50" max="2000" step="25" value="250" class="w-full" oninput="updateRoiCalc(this.value)">
+            <div class="flex justify-between text-[10px] text-slate-500 font-mono">
+              <span>$50k (Seed)</span>
+              <span>$250k (Series A/Mid Enterprise)</span>
+              <span>$2.0M (Scale Enterprise)</span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 md:grid-cols-4 gap-4 pt-2">
+            <div class="bg-black/40 rounded-xl p-4 border border-white/5 space-y-1">
+              <div class="text-[10px] font-mono text-emerald-400 uppercase">Annual Cost Cut</div>
+              <div id="calc-savings" class="text-2xl font-black text-white font-mono">$62,500</div>
+              <div class="text-[11px] text-slate-400">Via 25% over-provisioning trimming</div>
+            </div>
+
+            <div class="bg-black/40 rounded-xl p-4 border border-white/5 space-y-1">
+              <div class="text-[10px] font-mono text-cyan-400 uppercase">Runaway Loss Averted</div>
+              <div id="calc-runaway" class="text-2xl font-black text-white font-mono">$25,000</div>
+              <div class="text-[11px] text-slate-400">Circuit breakers stopping recursive spirals</div>
+            </div>
+
+            <div class="bg-black/40 rounded-xl p-4 border border-white/5 space-y-1">
+              <div class="text-[10px] font-mono text-purple-400 uppercase">Eng Hours Saved</div>
+              <div id="calc-hours" class="text-2xl font-black text-white font-mono">480 hrs</div>
+              <div class="text-[11px] text-slate-400">Slashing MTTR log parsing</div>
+            </div>
+
+            <div class="bg-black/40 rounded-xl p-4 border border-white/5 space-y-1">
+              <div class="text-[10px] font-mono text-amber-400 uppercase">Payback Period</div>
+              <div id="calc-payback" class="text-2xl font-black text-white font-mono">&lt; 6 Weeks</div>
+              <div class="text-[11px] text-slate-400">Net positive ROI time frame</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 9: THE RISK OF INACTION ==================== -->
+    <div class="slide-wrapper" data-slide="9">
+      <div class="w-full space-y-6 text-center max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-rose-500/30 bg-rose-500/10 text-rose-300 text-xs font-mono tracking-wide uppercase mx-auto">
+          The Cost of Delay
+        </div>
+
+        <h3 class="text-3xl sm:text-5xl font-extrabold text-white tracking-tight">
+          The Hidden Cost of "Saving Money" on a Dashboard
+        </h3>
+
+        <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          Building high-capability software while skipping an operational control plane is like engineering a high-speed Formula 1 race car and omitting the instrument cluster.
+        </p>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4 text-left max-w-3xl mx-auto">
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-rose-500 space-y-2">
+            <div class="text-sm font-bold text-white">One Single Major Outage</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Consumes more engineering payroll and causes more customer churn in 24 hours than the entire capital expenditure required to deploy an enterprise dashboard.
+            </p>
+          </div>
+
+          <div class="glass-card rounded-2xl p-6 border-l-4 border-l-rose-500 space-y-2">
+            <div class="text-sm font-bold text-white">One Failed Enterprise Audit</div>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Losing a seven-figure enterprise deal because the security committee rejects an unmonitored system permanently damages corporate velocity.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 10: CONCLUSION & VERDICT ==================== -->
+    <div class="slide-wrapper" data-slide="10">
+      <div class="text-center space-y-6 max-w-4xl px-4">
+        <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-emerald-500/30 bg-emerald-500/10 text-emerald-300 text-xs font-mono tracking-wide uppercase">
+          Final Executive Verdict
+        </div>
+
+        <h3 class="text-4xl sm:text-6xl font-extrabold text-white tracking-tight leading-tight">
+          A Dashboard is Not Just a Feature.<br/>
+          <span class="bg-gradient-to-r from-cyan-400 via-emerald-300 to-violet-400 bg-clip-text text-transparent">
+            It is How You Monetize & Scale.
+          </span>
+        </h3>
+
+        <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed">
+          Investing in a control plane transforms invisible backend friction into predictable financial returns, audited enterprise security, and unbreakable customer trust.
+        </p>
+
+        <div class="pt-4 flex flex-col items-center gap-4">
+          <div class="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 font-mono text-xs shadow-lg shadow-emerald-500/10">
+            <svg class="w-4 h-4 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path></svg>
+            <span>Backed by our 30-Day 100% Money-Back Guarantee</span>
+          </div>
+
+          <div class="flex flex-wrap items-center justify-center gap-4 pt-2">
+            <button onclick="goToSlide(1)" class="px-8 py-3.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-slate-950 font-bold text-sm transition-all shadow-xl shadow-cyan-500/25 flex items-center gap-2">
+              <span>Restart Presentation</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM BAR: PROGRESS & THUMBNAILS -->
+  <footer class="relative z-20 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-white/10 pt-4">
+    <!-- Progress Bar -->
+    <div class="w-full sm:w-1/3 bg-white/10 h-1.5 rounded-full overflow-hidden">
+      <div id="progress-bar" class="bg-gradient-to-r from-cyan-400 via-violet-400 to-emerald-400 h-full w-[10%] transition-all duration-300"></div>
+    </div>
+
+    <!-- Slide Thumbnails / Indicator Pills -->
+    <div class="flex items-center gap-2" id="slide-pill-container">
+      <!-- Injected by JS -->
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="flex items-center gap-3">
+      <button onclick="prevSlide()" class="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-xs font-mono text-white transition-all flex items-center gap-1.5">
+        <span>← Prev</span>
+      </button>
+      <button onclick="nextSlide()" class="px-5 py-2 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs font-mono transition-all shadow-md shadow-cyan-500/20 flex items-center gap-1.5">
+        <span>Next →</span>
+      </button>
+    </div>
+  </footer>
+
+  <script>
+    let currentSlide = 1;
+    const totalSlides = 10;
+
+    function updateSlides() {
+      document.querySelectorAll('.slide-wrapper').forEach(s => {
+        s.classList.remove('active');
+      });
+
+      const activeSlide = document.querySelector(`.slide-wrapper[data-slide="${currentSlide}"]`);
+      if (activeSlide) {
+        activeSlide.classList.add('active');
+      }
+
+      document.getElementById('slide-number-display').innerText = currentSlide;
+
+      const pct = (currentSlide / totalSlides) * 100;
+      document.getElementById('progress-bar').style.width = pct + '%';
+
+      renderPills();
+    }
+
+    function renderPills() {
+      const container = document.getElementById('slide-pill-container');
+      container.innerHTML = '';
+      for (let i = 1; i <= totalSlides; i++) {
+        const btn = document.createElement('button');
+        const isActive = i === currentSlide;
+        btn.className = `h-2 rounded-full transition-all duration-300 ${isActive ? 'w-8 bg-cyan-400 shadow-sm shadow-cyan-400' : 'w-2 bg-white/20 hover:bg-white/40'}`;
+        btn.onclick = () => goToSlide(i);
+        container.appendChild(btn);
+      }
+    }
+
+    function nextSlide() {
+      if (currentSlide < totalSlides) {
+        currentSlide++;
+        updateSlides();
+      }
+    }
+
+    function prevSlide() {
+      if (currentSlide > 1) {
+        currentSlide--;
+        updateSlides();
+      }
+    }
+
+    function goToSlide(n) {
+      currentSlide = n;
+      updateSlides();
+    }
+
+    function toggleFullscreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    // ROI Calculator
+    function updateRoiCalc(val) {
+      const spend = parseInt(val, 10) * 1000;
+      document.getElementById('spend-slider-display').innerText = "$" + (spend).toLocaleString() + " / year";
+
+      const savings = Math.round(spend * 0.25);
+      const runaway = Math.round(spend * 0.10);
+      const hours = Math.round((spend / 1000) * 1.92);
+
+      document.getElementById('calc-savings').innerText = "$" + savings.toLocaleString();
+      document.getElementById('calc-runaway').innerText = "$" + runaway.toLocaleString();
+      document.getElementById('calc-hours').innerText = hours.toLocaleString() + " hrs";
+    }
+
+    // Keyboard Navigation
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+
+    // Touch Swiping
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', (e) => {
+      let touchEndX = e.changedTouches[0].screenX;
+      if (touchStartX - touchEndX > 60) nextSlide();
+      if (touchEndX - touchStartX > 60) prevSlide();
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderPills();
+      updateSlides();
+      updateRoiCalc(250);
+    });
+  </script>
+</body>
+</html>
