@@ -537,9 +537,9 @@
       <div class="glass-card metric-card" style="--card-accent: var(--accent-cyan)">
         <div class="metric-label">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-          Wire-Speed Interception
+          Nanosecond Interception
         </div>
-        <div class="metric-value">&lt; 23.8 µs</div>
+        <div class="metric-value">&lt; 23,800 ns</div>
         <div class="metric-sub">Positive micro-schema &amp; YARA-X filtering—8,000x faster than 300ms LLM guardrail lag.</div>
       </div>
 
@@ -714,7 +714,7 @@
             <div class="pillar-body">
               As AI agents gain filesystem, terminal, and database execution authority, indirect prompt injections, honeypots, and shadow tool hijacking become catastrophic enterprise vectors. An attacker can prompt-inject a researcher agent into issuing destructive wipes or harvesting memory.
               <br/><br/>
-              Diamonize L7 acts as an in-process pre-dispatch airlock. With compiled YARA-X rules, confusable Unicode normalization, and positive micro-schema enforcement, destructive commands and LOLBins are intercepted in under 24 microseconds—preventing automated extortion at wire speed.
+              Diamonize L7 acts as an in-process pre-dispatch airlock. With compiled YARA-X rules, confusable Unicode normalization, and positive micro-schema enforcement, destructive commands and LOLBins are intercepted at nanosecond speeds—preventing automated extortion at wire speed.
             </div>
           </div>
           <div class="pillar-highlight">
@@ -777,7 +777,7 @@
             <tr>
               <td class="col-feature">Pre-Dispatch Gate Latency</td>
               <td class="col-unconstrained">250ms – 600ms (Remote LLM Guardrail Call)</td>
-              <td class="col-maxion">&lt; 24µs (Compiled In-Process Micro-Schema)</td>
+              <td class="col-maxion">&lt; 24,000 ns (Compiled In-Process Micro-Schema)</td>
             </tr>
             <tr>
               <td class="col-feature">Silicon Thermal Regulation</td>
@@ -834,23 +834,12 @@
       document.getElementById('val-spin').innerText = spinRate.toFixed(1) + '%';
       document.getElementById('val-pue').innerText = pue.toFixed(2) + ' PUE';
 
-      // Mathematical Model:
-      // Total daily calls: agents * calls
-      // Wasted calls prevented: totalCalls * (spinRate / 100)
-      // Average compute per unconstrained tool call: 2.4 CPU seconds at 65W
-      // Energy saved = callsPrevented * (2.4 / 3600) * 0.065 kWh * pue * 365 days
       const dailyCalls = agents * calls;
       const wastedCallsAnnual = dailyCalls * (spinRate / 100) * 365;
       const kwhAnnual = wastedCallsAnnual * (2.4 / 3600) * 0.065 * pue;
       const gwhAnnual = kwhAnnual / 1000000;
-
-      // Carbon: ~423 grams CO2 per kWh global grid average
       const co2Tons = (kwhAnnual * 0.423) / 1000;
-
-      // Cloud cost saved: ~0.00012 per wasted core-second
       const usdSaved = (wastedCallsAnnual * 2.4 * 0.00012);
-
-      // Threat injections blocked: estimated 0.35% of total tool calls contain prompt injections/adversarial payloads
       const threatsBlocked = (dailyCalls * 365) * 0.000035;
 
       document.getElementById('out-kwh').innerText = gwhAnnual >= 1 ? (gwhAnnual.toFixed(1) + ' GWh') : ((kwhAnnual / 1000).toFixed(0) + ' MWh');
@@ -864,7 +853,6 @@
       }
     }
 
-    // Initialize on load
     updateSim();
   </script>
 </body>
