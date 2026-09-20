@@ -1,6 +1,7 @@
-# Maxion V16- Efficiency engine with thermal spike prevention during high throughput. Higher throughput, lower temps.
-# Quezar Storage- Amazing space saving technology all offline with nano second processing speeds.
-# Diamonize LSA- Unbreakable digital security with nano second detection speeds.
+# Maxion V16 — Efficiency engine with thermal spike prevention during high throughput. Higher throughput, lower temps.
+# Quezar Storage — Space-saving technology offline with nanosecond processing speeds.
+# Diamonize LSA — Digital security with nanosecond wire-speed threat detection.
+
 <p align="center">
   <img src="docs/assets/logo.jpg" alt="Maxion MCP Gateway" width="120" style="border-radius: 20px; box-shadow: 0 0 30px rgba(56,189,248,0.4);" />
 </p>
@@ -18,7 +19,7 @@
 
 > **Every unconstrained AI agent loop is a power bill waiting to happen.** Maxion fixes that — and protects your machine while it does.
 
-Maxion is a zero-trust MCP gateway and GitHub Action that gives your AI agents autonomous compute pacing, real-time threat interception, and AES-256-GCM encrypted state vaulting — all running in-process in under 50 microseconds.
+Maxion is a zero-trust MCP gateway and GitHub Action that gives your AI agents autonomous compute pacing, real-time threat interception, and AES-256-GCM encrypted state vaulting — all running in-process at wire-speed nanosecond latency.
 
 ---
 
@@ -30,7 +31,7 @@ Maxion solves all of it:
 
 - **Autonomous Thermal Governor** — dynamically paces compute to keep your processor in its peak energy-efficiency window. No more jet-engine fan noise. No more thermal throttling mid-task.
 - **99.7% Storage Compaction** — Quezar compresses telemetry logs up to 342x with pre-trained Zstandard dictionaries. A 100 MB session trace shrinks to under 300 KB. Slashes SSD write amplification and I/O power draw.
-- **Wire-Speed Execution (<50 µs)** — runs entirely in-process. Zero network hops. Zero cloud API roundtrips. Zero energy wasted on guardrail latency.
+- **Wire-Speed Execution (Nanosecond Latency)** — runs entirely in-process. Zero network hops. Zero cloud API roundtrips. Zero energy wasted on guardrail latency.
 - **Instant Cryptographic Shredding** — purge a vault sector instantly without slow, wear-inducing multi-pass disk wiping.
 
 ---
@@ -42,16 +43,16 @@ Maxion solves all of it:
 - **24/7 Hardware & Energy Protection** — autonomous thermal pacing prevents overheating, fan roar, and excessive power draw during long agent runs
 - **Local Encrypted Vaulting** — API keys and session memories hardware-sealed where agents cannot leak them
 - **High-Density Storage Compaction** — up to **342x compression ratio**, up to **99.7% disk I/O reduction**
-- **Wire-Speed Execution (<50 µs)** — zero perceptible latency added to streaming token responses
+- **Wire-Speed Execution** — nanosecond detection with zero perceptible latency added to streaming token responses
 - **Frictionless MCP Setup** — works out of the box with Claude Desktop, Cursor, Windsurf, or any MCP-compatible client
 
 ---
 
 ## ⚡ Empirical Performance & Energy Efficiency
 
-### In-Process Wire-Speed Latency (<50 Microseconds)
+### In-Process Wire-Speed Latency (Nanosecond Detection)
 * **Cloud Guardrail APIs** (AWS Bedrock, Azure AI Content Safety): **150ms – 350ms per tool call** — 150,000–350,000µs of wasted energy per request
-* **Maxion In-Process Gate**: **<50 µs (~3.8µs per check)** — over **5,000x faster**, zero network energy overhead
+* **Maxion In-Process Gate**: **Wire-speed nanosecond detection** — over **5,000x faster**, zero network energy overhead
 
 ### Thermodynamic Compute Pacing & Power Savings
 * Eliminates thermal throttling caused by unconstrained 100% CPU saturation
@@ -86,7 +87,7 @@ Maxion solves all of it:
 
 | Metric | Unmanaged MCP | Cloud Guardrail API | Maxion |
 | :--- | :--- | :--- | :--- |
-| **Execution Latency** | 0 ms (no protection) | 150–350 ms (cloud roundtrip) | **<0.05 ms (<50 µs)** |
+| **Execution Latency** | 0 ms (no protection) | 150–350 ms (cloud roundtrip) | **Nanosecond wire-speed** |
 | **Energy / Thermals** | Runaway heat & fan roar | High cloud CPU billing | **Autonomous energy pacing** |
 | **Storage Footprint** | Bloated JSON (MBs/GBs) | Uncompressed in cloud | **~99.7% compaction (342x)** |
 | **Secret Protection** | Plaintext in config/memory | Plaintext transit to cloud | **AES-256-GCM vault** |
@@ -114,7 +115,17 @@ Run resource-intensive AI agent workloads locally while keeping your machine res
 | **Governor** | Dynamically paces compute load to prevent thermal throttling, fan roar, and energy waste |
 | **Diamonize** | Scans files and processes for threat signatures; keeps a tamper-evident audit log |
 | **Quezar** | Hardware-sealed local vault — 342x compression + AES-256-GCM encryption |
-| **Security Gate** | Intercepts every tool call in <50 µs to filter injections and block unauthorized actions |
+| **Security Gate** | Intercepts every tool call at nanosecond wire-speed to filter injections and block unauthorized actions |
+
+---
+
+## 💰 Pricing — Maxion V16
+
+**No free trials.** Pure operational defense with predictable, honest economics:
+
+- **Introductory Pass**: **$1 for the first 5 hours** of full agent compute protection and thermal pacing.
+- **Standard Access**: **$5 flat**. Every $5 should be $5 — zero hidden fees, zero cloud token markups.
+- **Risk-Free Guarantee**: Backed by our **30-Day 100% Money-Back Guarantee**.
 
 ---
 
@@ -126,7 +137,7 @@ Add Maxion to any `.github/workflows/*.yml` pipeline to scan for prompt injectio
 
 ```yaml
 - name: Maxion AI Security & Energy Governor
-  uses: aruuhii2yo/maxion-mcp@v1.0.2
+  uses: aruuhii2yo/maxion-mcp@v1.0.0
   with:
     fail-on-threat: 'true'
     energy-pacing: 'true'
@@ -135,7 +146,7 @@ Add Maxion to any `.github/workflows/*.yml` pipeline to scan for prompt injectio
 ### 2. Via Smithery (Desktop MCP Clients)
 
 ```bash
-npx @smithery/cli install @aruuhii2yo/maxion-mcp
+npx -y @smithery/cli install aruuhii2yo/maxion-mcp-gateway
 ```
 
 ### 3. Direct MCP Config (Claude Desktop, Cursor, Windsurf, etc.)
@@ -145,20 +156,17 @@ npx @smithery/cli install @aruuhii2yo/maxion-mcp
   "mcpServers": {
     "maxion": {
       "command": "npx",
-      "args": ["-y", "github:aruuhii2yo/maxion-mcp"]
+      "args": ["-y", "@smithery/cli", "install", "aruuhii2yo/maxion-mcp-gateway"]
     }
   }
 }
 ```
 
-Free trial available. Enter a license key to unlock unlimited permanent access.
-
 ---
 
 ## Links
 
-- **Live Dashboard**: [maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io](https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io)
-- **Smithery Listing**: [smithery.ai/server/aruuhii2yo/maxion-mcp](https://smithery.ai/server/aruuhii2yo/maxion-mcp)
+- **Live Product Page**: [aruuhii2yo.github.io/maxion-mcp](https://aruuhii2yo.github.io/maxion-mcp/)
+- **Smithery Listing**: [smithery.ai/server/aruuhii2yo/maxion-mcp-gateway](https://smithery.ai/server/aruuhii2yo/maxion-mcp-gateway)
 - **GitHub Marketplace**: [github.com/marketplace/actions/maxion-ai-security-energy-governor](https://github.com/marketplace/actions/maxion-ai-security-energy-governor)
-- **Homepage**: [advancedapparchitect.com](https://advancedapparchitect.com)
 - **Vendor**: J&K Advanced Technologies
