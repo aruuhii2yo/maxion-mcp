@@ -6,8 +6,12 @@
 // Maxion gateway over Streamable HTTP. The actual engines (Maxion V16,
 // Quezar, Diamonize) and the security gate run server-side.
 //
-// Configure the target with MAXION_GATEWAY_URL if pointing at a custom
-// deployment. The default is the primary live Azure Container App gateway.
+// Set MAXION_GATEWAY_URL to the gateway you want to reach, e.g.
+//   MAXION_GATEWAY_URL=https://your-host.example.com/mcp
+//
+// There is deliberately no baked-in default. A hardcoded endpoint that
+// stops serving /mcp produces a confusing 404 for every caller; requiring
+// an explicit URL fails loudly and tells you what to set instead.
 
 'use strict';
 
@@ -16,7 +20,12 @@ const https = require('https');
 const http = require('http');
 const { URL } = require('url');
 
-const GATEWAY_URL = process.env.MAXION_GATEWAY_URL || 'https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io/mcp';
+const GATEWAY_URL = process.env.MAXION_GATEWAY_URL;
+
+const CONFIG_HELP =
+  'MAXION_GATEWAY_URL is not set. Point it at a Maxion gateway endpoint, e.g.\n' +
+  '  MAXION_GATEWAY_URL=https://your-host.example.com/mcp\n' +
+  'See https://github.com/aruuhii2yo/maxion-mcp for hosting options.';
 
 function forward(jsonRpcRequest) {
   return new Promise((resolve, reject) => {
@@ -56,6 +65,14 @@ rl.on('line', async (line) => {
   } catch {
     return; // not valid JSON-RPC, ignore
   }
+  if (!GATEWAY_URL) {
+    process.stdout.write(JSON.stringify({
+      jsonrpc: '2.0',
+      id: request.id ?? null,
+      error: { code: -32001, message: CONFIG_HELP },
+    }) + '\n');
+    return;
+  }
   try {
     const response = await forward(request);
     process.stdout.write(JSON.stringify(response) + '\n');
@@ -63,9 +80,13 @@ rl.on('line', async (line) => {
     process.stdout.write(JSON.stringify({
       jsonrpc: '2.0',
       id: request.id ?? null,
-      error: { code: -32000, message: `Bridge error: ${err.message}` },
+      error: { code: -32000, message: `Cannot reach Maxion gateway at ${GATEWAY_URL} — ${err.message}` },
     }) + '\n');
   }
 });
 
-process.stderr.write(`Maxion MCP stdio bridge started, forwarding to ${GATEWAY_URL}\n`);
+if (GATEWAY_URL) {
+  process.stderr.write(`Maxion MCP stdio bridge started, forwarding to ${GATEWAY_URL}\n`);
+} else {
+  process.stderr.write(`Maxion MCP stdio bridge: ${CONFIG_HELP}\n`);
+}
