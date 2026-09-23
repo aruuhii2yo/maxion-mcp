@@ -4,7 +4,7 @@
   "maintainers": [
     "aruuhii2yo"
   ],
-  "description": "In-process zero-trust security gate and autonomous hardware-adaptive compute governor for AI agents. Wire-speed nanosecond binary inspection, halts runaway loops, and encrypts state with AES-256-GCM. Backed by a 30-Day 100% Money-Back Guarantee.",
+  "description": "In-process zero-trust security gate and autonomous hardware-adaptive compute governor for AI agents. Checks each tool call in tens of microseconds (measured 12-67 µs), halts runaway loops, and encrypts state with AES-256-GCM. Backed by a 30-Day 100% Money-Back Guarantee.",
   "repository": "https://github.com/aruuhii2yo/maxion-mcp",
   "homepage": "https://aruuhii2yo.github.io/maxion-mcp/",
   "tags": [
@@ -19,7 +19,7 @@
     "security-gate",
     "autonomous-compute-pacing",
     "anti-runaway-loop",
-    "nanosecond",
+    "encrypted-storage",
     "money-back-guarantee"
   ]
 }
