@@ -12,6 +12,12 @@
 // There is deliberately no baked-in default. A hardcoded endpoint that
 // stops serving /mcp produces a confusing 404 for every caller; requiring
 // an explicit URL fails loudly and tells you what to set instead.
+//
+// Unconfigured, the bridge still completes the MCP handshake (initialize,
+// ping, an empty tools/list) and returns setup instructions, so clients and
+// registries see a working server that explains what it needs rather than
+// one that fails before it can say anything. Every other request gets the
+// same instructions as an error.
 
 'use strict';
 
@@ -19,13 +25,26 @@ const readline = require('readline');
 const https = require('https');
 const http = require('http');
 const { URL } = require('url');
+const { version: PKG_VERSION } = require('./package.json');
 
 const GATEWAY_URL = process.env.MAXION_GATEWAY_URL;
+const SERVER_INFO = { name: 'maxion-mcp', version: PKG_VERSION };
+const DEFAULT_PROTOCOL_VERSION = '2025-06-18';
 
 const CONFIG_HELP =
   'MAXION_GATEWAY_URL is not set. Point it at a Maxion gateway endpoint, e.g.\n' +
   '  MAXION_GATEWAY_URL=https://your-host.example.com/mcp\n' +
   'See https://github.com/aruuhii2yo/maxion-mcp for hosting options.';
+
+// JSON-RPC: a message without an "id" member is a notification and must
+// never get a response.
+function isNotification(msg) {
+  return !Object.prototype.hasOwnProperty.call(msg, 'id');
+}
+
+function send(msg) {
+  process.stdout.write(JSON.stringify(msg) + '\n');
+}
 
 function forward(jsonRpcRequest) {
   return new Promise((resolve, reject) => {
@@ -42,6 +61,7 @@ function forward(jsonRpcRequest) {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
+        if (!data.trim()) return resolve(null); // e.g. 202 Accepted for a notification
         try {
           resolve(JSON.parse(data));
         } catch (err) {
@@ -55,6 +75,27 @@ function forward(jsonRpcRequest) {
   });
 }
 
+// What the bridge answers itself when no gateway is configured.
+function answerUnconfigured(request) {
+  switch (request.method) {
+    case 'initialize':
+      return {
+        result: {
+          protocolVersion: (request.params && request.params.protocolVersion) || DEFAULT_PROTOCOL_VERSION,
+          capabilities: { tools: {} },
+          serverInfo: SERVER_INFO,
+          instructions: CONFIG_HELP,
+        },
+      };
+    case 'ping':
+      return { result: {} };
+    case 'tools/list':
+      return { result: { tools: [] } };
+    default:
+      return { error: { code: -32001, message: CONFIG_HELP } };
+  }
+}
+
 const rl = readline.createInterface({ input: process.stdin, terminal: false });
 
 rl.on('line', async (line) => {
@@ -65,23 +106,27 @@ rl.on('line', async (line) => {
   } catch {
     return; // not valid JSON-RPC, ignore
   }
+  const notification = isNotification(request);
+
   if (!GATEWAY_URL) {
-    process.stdout.write(JSON.stringify({
-      jsonrpc: '2.0',
-      id: request.id ?? null,
-      error: { code: -32001, message: CONFIG_HELP },
-    }) + '\n');
+    if (notification) return;
+    send({ jsonrpc: '2.0', id: request.id, ...answerUnconfigured(request) });
     return;
   }
+
   try {
     const response = await forward(request);
-    process.stdout.write(JSON.stringify(response) + '\n');
+    if (!notification && response) send(response);
   } catch (err) {
-    process.stdout.write(JSON.stringify({
+    if (notification) {
+      process.stderr.write(`Maxion bridge: notification ${request.method} not delivered — ${err.message}\n`);
+      return;
+    }
+    send({
       jsonrpc: '2.0',
-      id: request.id ?? null,
+      id: request.id,
       error: { code: -32000, message: `Cannot reach Maxion gateway at ${GATEWAY_URL} — ${err.message}` },
-    }) + '\n');
+    });
   }
 });
 

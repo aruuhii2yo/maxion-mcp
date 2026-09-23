@@ -1,6 +1,6 @@
 {
   "name": "@aruuhii2yo/maxion-mcp",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Zero-trust MCP security gateway — autonomous compute pacing (Governor), real-time threat interception (Diamonize), and AES-256-GCM encrypted state vault (Quezar). Protects AI agents from prompt injection, runaway loops, and plaintext leakage.",
   "main": "index.js",
   "bin": {

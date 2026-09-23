@@ -29,13 +29,24 @@ jobs:
         run: |
           node -e "
             const fs = require('fs');
-            const readme = fs.readFileSync('README.md', 'utf8');
-            const forbidden = ['100% immunity', 'complete immunity', 'absolute safety', 'ironclad guarantee', 'stopped dead in their tracks'];
-            for (const phrase of forbidden) {
-              if (readme.toLowerCase().includes(phrase)) {
-                console.error('Forbidden ungrounded phrase found:', phrase);
-                process.exit(1);
+            // Public-facing files. Measured values live in README's Verified Test Results.
+            const files = ['README.md', 'glama.json', 'server.json', 'smithery.yaml', 'action.yml', 'action_runner.js', 'package.json']
+              .filter(f => fs.existsSync(f));
+            const forbidden = [
+              '100% immunity', 'complete immunity', 'absolute safety', 'ironclad guarantee', 'stopped dead in their tracks',
+              // Previously published, contradicted by measurement (gate is 12-67 us; compression 8-12.7x):
+              'nanosecond', 'nano second', '342x', '99.7%', 'unbreakable', 'energy conserved', 'wh saved'
+            ];
+            let failed = false;
+            for (const f of files) {
+              const text = fs.readFileSync(f, 'utf8').toLowerCase();
+              for (const phrase of forbidden) {
+                if (text.includes(phrase)) {
+                  console.error('Forbidden ungrounded phrase in ' + f + ': ' + phrase);
+                  failed = true;
+                }
               }
             }
-            console.log('Grounded safety verification passed: 0 prohibited claims.');
+            if (failed) process.exit(1);
+            console.log('Grounded claims check passed across ' + files.length + ' public files.');
           "
