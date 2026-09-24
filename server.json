@@ -2,26 +2,28 @@
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.aruuhii2yo/maxion-mcp",
   "title": "Maxion MCP Gateway",
-  "description": "Zero-trust MCP security gateway and thermodynamic compute governor. Cuts AI agent energy burn, neutralizes prompt injections, terminates runaway loops, and provides an AES-256-GCM encrypted state vault with 342x compaction.",
+  "description": "MCP security gate: blocks prompt injection, paces CPU load, AES-256-GCM encrypted vault.",
   "repository": {
     "url": "https://github.com/aruuhii2yo/maxion-mcp",
     "source": "github"
   },
-  "version": "1.0.1",
+  "version": "1.0.4",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "@aruuhii2yo/maxion-mcp",
-      "version": "1.0.1",
+      "version": "1.0.4",
       "transport": {
         "type": "stdio"
       },
-      "environmentVariables": {
-        "MAXION_GATEWAY_URL": {
-          "description": "Hosted Maxion MCP Gateway Endpoint",
-          "default": "https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io"
+      "environmentVariables": [
+        {
+          "name": "MAXION_GATEWAY_URL",
+          "description": "URL of the Maxion gateway's /mcp endpoint to forward requests to. Required; there is no default.",
+          "isRequired": true,
+          "format": "string"
         }
-      }
+      ]
     }
   ]
 }

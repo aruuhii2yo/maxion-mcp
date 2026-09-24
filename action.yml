@@ -1,33 +1,31 @@
 name: 'Maxion AI Security & Energy Governor'
-description: 'Zero-trust prompt injection defense, rogue command interception, and thermodynamic compute pacing for AI workflows.'
+description: 'Scans your repository for known prompt-injection phrases and fails the step when one is found.'
 author: 'aruuhii2yo'
 branding:
   icon: 'shield'
   color: 'green'
 inputs:
   gateway-url:
-    description: 'Maxion Gateway Endpoint URL'
+    description: 'Optional Maxion gateway base URL to health-check. Leave empty (default) to scan entirely inside the runner.'
     required: false
-    default: 'https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io'
+    default: ''
   scan-path:
-    description: 'Path or file to scan for adversarial prompt injections and secrets'
+    description: 'Path or file to scan for known prompt-injection phrases'
     required: false
     default: '.'
   fail-on-threat:
-    description: 'Fail the GitHub Action step if an active threat or injection is detected'
+    description: 'Fail the step if any file matches a known prompt-injection phrase'
     required: false
     default: 'true'
   energy-pacing:
-    description: 'Enable autonomous thermal & energy pacing for CI runner optimization'
+    description: 'Deprecated, no effect. This Action does not pace or throttle CI runners.'
     required: false
-    default: 'true'
+    default: 'false'
 outputs:
   status:
-    description: 'Security & Pacing audit status (passed or quarantined)'
+    description: 'passed if no file matched, otherwise quarantined'
   threats-intercepted:
-    description: 'Total number of threat vectors neutralized'
-  energy-saved-wh:
-    description: 'Estimated compute energy saved across CI run (Wh)'
+    description: 'Number of files that matched a known prompt-injection phrase'
 runs:
   using: 'node20'
   main: 'action_runner.js'

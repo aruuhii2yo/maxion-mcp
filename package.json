@@ -1,6 +1,6 @@
 {
   "name": "@aruuhii2yo/maxion-mcp",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "description": "Zero-trust MCP security gateway — autonomous compute pacing (Governor), real-time threat interception (Diamonize), and AES-256-GCM encrypted state vault (Quezar). Protects AI agents from prompt injection, runaway loops, and plaintext leakage.",
   "main": "index.js",
   "bin": {
@@ -13,7 +13,7 @@
     "type": "git",
     "url": "git+https://github.com/aruuhii2yo/maxion-mcp.git"
   },
-  "homepage": "https://maxion-gateway.victoriousbush-db34cb90.eastus.azurecontainerapps.io",
+  "homepage": "https://github.com/aruuhii2yo/maxion-mcp",
   "keywords": [
     "mcp",
     "model-context-protocol",
