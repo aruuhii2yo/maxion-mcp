@@ -164,10 +164,10 @@ Run resource-intensive AI agent workloads locally with compute pacing built in.
 
 ## 💰 Pricing — Maxion V16
 
-**No free trials.** Pure operational defense with predictable, honest economics:
+**Dead-simple pricing. No free trials.**
 
-- **Introductory Pass**: **$1 for the first 5 hours** of full agent compute protection and thermal pacing.
-- **Standard Access**: **$5 flat**. Every $5 should be $5 — zero hidden fees, zero cloud token markups.
+- **Hourly Access**: **$2.50 / hour** — [purchase hourly](https://architectura18.gumroad.com/l/ygbwen)
+- **Maxion Monthly**: **$20 / month** — [get Maxion Monthly](https://architectura18.gumroad.com/l/komab)
 - **Risk-Free Guarantee**: Backed by our **30-Day 100% Money-Back Guarantee**.
 
 ---
